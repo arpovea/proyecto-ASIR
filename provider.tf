@@ -11,8 +11,8 @@ provider "google" {
 
   credentials = file("velvety-outcome-308412-4680d1d3da9c.json")
 
-  project = "velvety-outcome-308412"
-  region  = "europe-west1"
+  project = var.project_id
+  region  = var.region
   zone    = "europe-west1-b"
 }
 
