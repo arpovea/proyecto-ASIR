@@ -9,7 +9,7 @@ terraform {
 
 provider "google" {
 
-  credentials = file("velvety-outcome-308412-4680d1d3da9c.json")
+  credentials = file("claveacceso.json")
 
   project = var.project_id
   region  = var.region
@@ -20,6 +20,6 @@ terraform {
   backend "gcs" {
     bucket  = "terraform-bucket-proyecto-asir"
     prefix  = "terraform/state"
-    credentials = "velvety-outcome-308412-4680d1d3da9c.json"
+    credentials = "claveacceso.json"
   }
 }
