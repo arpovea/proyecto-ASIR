@@ -12,6 +12,12 @@ output "region" {
   description = "GCloud Region"
 }
 
+
+output "zone" {
+  value       = var.zone
+  description = "GCloud Zone"
+}
+
 # Kubernetes
 
 output "gke_num_nodes" {

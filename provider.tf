@@ -13,7 +13,7 @@ provider "google" {
 
   project = var.project_id
   region  = var.region
-  zone    = "europe-west1-b"
+  zone    = var.zone
 }
 
 terraform {

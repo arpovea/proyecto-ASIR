@@ -3,6 +3,7 @@
 # Id proyecto y región
 project_id = "velvety-outcome-308412"
 region = "europe-west1"
+zone = "europe-west1-b"
 
 # Kubernetes
 gke_num_nodes = 2

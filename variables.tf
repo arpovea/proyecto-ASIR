@@ -1,12 +1,16 @@
 # Definición de las variables
 
-# ID proyecto y región
+# ID proyecto,región y zona
 variable "project_id" {
   description = "GCloud Project ID"
 }
 
 variable "region" {
   description = "Gloud Region"
+}
+
+variable "zone" {
+  description = "Gloud zone"
 }
 
 # Kubernetes
