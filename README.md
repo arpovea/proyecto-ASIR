@@ -16,3 +16,4 @@ El primer nombre es el nombre del servicio en la nube, el segundo su nombre en t
 - VPC para terraform.
 - Bukect para almacenar el estado en remoto de terrafom (para trabajar en un equipo.)
 - Creación de ficheros para el uso de variables.
+- Habilitar Kubernetes Engine API para que terraform pueda desplegar kubernetes.
