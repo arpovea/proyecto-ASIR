@@ -6,6 +6,16 @@ resource "google_container_cluster" "primary" {
   remove_default_node_pool = true
   initial_node_count       = 1
 
+# Deshabilitamos el balanceador por defecto y el autoescalado horizontal de los pods.
+  addons_config {
+    http_load_balancing {
+      disabled = true
+    }
+    horizontal_pod_autoscaling {
+      disabled = true
+    }
+  }
+
   network    = google_compute_network.vpc_proyecto_asir.name
   subnetwork = google_compute_subnetwork.subnet_proyecto_asir.name
 
@@ -35,7 +45,7 @@ resource "google_container_node_pool" "primary_nodes" {
     labels = {
       env = var.project_id
     }
-
+    
     # preemptible  = true
     machine_type = "n1-standard-1"
     tags         = ["gke-node", "proyecto-asir-gke"]
