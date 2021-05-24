@@ -1,4 +1,4 @@
-# GKE cluster
+# GKE cluster, crea el cluster y borra el nodo por defecto.
 resource "google_container_cluster" "primary" {
   name     = "proyecto-asir-gke"
   location = var.zone
@@ -29,7 +29,7 @@ resource "google_container_cluster" "primary" {
   }
 }
 
-# Separately Managed Node Pool
+# Creamos los nodos despues de desplegar el cluster en este caso 2.
 resource "google_container_node_pool" "primary_nodes" {
   name       = "${google_container_cluster.primary.name}-node-pool"
   location   = var.zone
