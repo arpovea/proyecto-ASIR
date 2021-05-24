@@ -19,7 +19,7 @@ provider "google" {
 terraform {
   backend "gcs" {
     bucket  = "terraform-bucket-proyecto-asir"
-    prefix  = "terraform/state"
+    prefix  = "terraform/state/default.tfstate"
     credentials = "claveacceso.json"
   }
 }
