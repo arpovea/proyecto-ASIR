@@ -36,6 +36,12 @@ resource "google_container_node_pool" "primary_nodes" {
   cluster    = google_container_cluster.primary.name
   node_count = var.gke_num_nodes
 
+ # Addon GKE autoscaler tipo balanced. Autoescala hasta 5
+  autoscaling {
+    max_node_count = 5
+    min_node_count = 2
+  }
+
   node_config {
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
@@ -47,7 +53,7 @@ resource "google_container_node_pool" "primary_nodes" {
     }
     
     # preemptible  = true
-    machine_type = "n1-standard-1"
+    machine_type = "e2-medium"
     tags         = ["gke-node", "proyecto-asir-gke"]
     metadata = {
       disable-legacy-endpoints = "true"
