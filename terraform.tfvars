@@ -6,6 +6,6 @@ region = "europe-west1"
 zone = "europe-west1-b"
 
 # Kubernetes
-gke_num_nodes = 2
+gke_num_nodes = 0
 gke_username = ""
 gke_password = ""
