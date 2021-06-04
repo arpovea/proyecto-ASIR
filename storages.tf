@@ -5,10 +5,13 @@ resource "google_storage_bucket" "terraform_bucket" {
 
   lifecycle_rule {
     condition {
-      age = 3
+      num_newer_versions = 5
     }
     action {
       type = "Delete"
     }
+  }
+  versioning {
+    enabled = true
   }
 }
