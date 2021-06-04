@@ -37,10 +37,10 @@ resource "google_container_node_pool" "primary_nodes" {
   node_count = var.gke_num_nodes
 
  # Addon GKE autoscaler tipo balanced. Autoescala hasta 5
-/*   autoscaling {
-    max_node_count = 1
-    min_node_count = 0
-  } */
+  autoscaling {
+    max_node_count = 5
+    min_node_count = 2
+  }
 
   node_config {
     oauth_scopes = [

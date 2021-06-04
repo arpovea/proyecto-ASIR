@@ -34,10 +34,18 @@ resource "kubernetes_namespace" "argocd" {
 }
 
 
+# # Desplegando argocd con helm
+# resource "helm_release" "helm_argocd" {
+#     name       = "argocd"
+#     repository = "https://argoproj.github.io/argo-helm"
+#     chart      = "argo-cd"
+#     namespace = "argocd"
+# }
+
 # Desplegando argocd con helm
 resource "helm_release" "helm_argocd" {
     name       = "argocd"
-    repository = "https://argoproj.github.io/argo-helm"
+    repository = "https://github.com/arpovea/argocd.git"
     chart      = "argo-cd"
     namespace = "argocd"
 }
