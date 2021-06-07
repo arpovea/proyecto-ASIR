@@ -1,3 +1,4 @@
+#Versión del proveedor que utiliza terraform.
 terraform {
   required_providers {
     google = {
@@ -7,6 +8,7 @@ terraform {
   }
 }
 
+#Credenciales para conectarse a google.
 provider "google" {
 
   credentials = file("claveacceso.json")
@@ -16,6 +18,7 @@ provider "google" {
   zone    = var.zone
 }
 
+#Estado remoto de terraform.
 terraform {
   backend "gcs" {
     bucket  = "terraform-bucket-proyecto-asir"
@@ -24,6 +27,7 @@ terraform {
   }
 }
 
+# Configuración para poder desplegar en kubernetes tipo kubectl, se utiliza un provider.
 data "google_client_config" "current" {
 }
 
@@ -33,7 +37,7 @@ provider "kubernetes" {
   token = "${data.google_client_config.current.access_token}"
 }
 
-
+# Configuración para desplegar con mediante helm, se utiliza un provider.
 provider "helm" {
 
   kubernetes {

@@ -1,7 +1,6 @@
 # Use this datasource to access the Terraform account's email for Kubernetes permissions.
 data "google_client_openid_userinfo" "terraform_user" {}
 
-
 resource "kubernetes_cluster_role_binding" "user" {
   metadata {
     name = "admin-user"
