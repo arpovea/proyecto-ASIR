@@ -26,17 +26,37 @@ resource "kubernetes_cluster_role_binding" "user" {
 }
 
 # Creando namespace para argocd
-resource "kubernetes_namespace" "argocd" {
-    metadata {
-        name = "argocd"
-    }
+resource "kubernetes_namespace" "herramientas" {
+  metadata {
+    name = "herramientas"
+  }
 }
 
 # Desplegando argocd con helm
 resource "helm_release" "helm_argocd" {
-    name       = "argocd"
-    repository = "https://argoproj.github.io/argo-helm"
-    chart      = "argo-cd"
-    namespace = "argocd"
-    values = ["${file("values.yaml")}"]
+  name       = "argocd"
+  repository = "https://argoproj.github.io/argo-helm"
+  chart      = "argo-cd"
+  namespace  = "herramientas"
+  values     = ["${file("values.yaml")}"]
+}
+
+# Desplegando ingress-controler con helm
+resource "helm_release" "helm_ingress_controler_herramientas" {
+  name       = "ingresscontr-herram"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx"
+  namespace  = "herramientas"
+  set {
+    name  = "controller.service.loadBalancerIP"
+    value = google_compute_address.ipv4_2.address
+  }
+  set {
+    name  = "controller.scope.enabled"
+    value = true
+  }
+  set {
+    name  = "controller.scope.namespace"
+    value = "herramientas"
+  }
 }

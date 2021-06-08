@@ -16,16 +16,16 @@ variable "zone" {
 # Kubernetes
 
 variable "gke_num_nodes" {
-#  default     = 2
+  #  default     = 2
   description = "number of gke nodes"
 }
 
 variable "gke_username" {
-#  default     = ""
+  #  default     = ""
   description = "gke username"
 }
 
 variable "gke_password" {
-#  default     = ""
+  #  default     = ""
   description = "gke password"
 }

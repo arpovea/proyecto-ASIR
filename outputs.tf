@@ -44,3 +44,13 @@ output "kubernetes_cluster_endpoint" {
   value       = google_container_cluster.primary.endpoint
   description = "GKE Cluster Host"
 }
+
+output "google_compute_global_address1" {
+  value       = google_compute_address.ipv4_1.address
+  description = "ipv4-address1"
+}
+
+output "google_compute_global_address2" {
+  value       = google_compute_address.ipv4_2.address
+  description = "ipv4-address2"
+}

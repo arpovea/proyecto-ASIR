@@ -6,7 +6,7 @@ resource "google_container_cluster" "primary" {
   remove_default_node_pool = true
   initial_node_count       = 1
 
-# Deshabilitamos el balanceador por defecto y el autoescalado horizontal de los pods.
+  # Deshabilitamos el balanceador por defecto y el autoescalado horizontal de los pods.
   addons_config {
     http_load_balancing {
       disabled = true
@@ -36,12 +36,17 @@ resource "google_container_node_pool" "primary_nodes" {
   cluster    = google_container_cluster.primary.name
   node_count = var.gke_num_nodes
 
- # Addon GKE autoscaler tipo balanced. Autoescala hasta 5
+  # Addon GKE autoscaler tipo balanced. Autoescala hasta 5
   autoscaling {
     max_node_count = 5
     min_node_count = 2
   }
-
+  # Ignoramos el node_count para que cuando autoescale no intente modificarlo, (cuando difiere del numero de nodos indicados inicialmente)
+  lifecycle {
+    ignore_changes = [
+      node_count,
+    ]
+  }
   node_config {
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
@@ -51,7 +56,8 @@ resource "google_container_node_pool" "primary_nodes" {
     labels = {
       env = var.project_id
     }
-    
+
+
     # preemptible  = true
     machine_type = "e2-medium"
     tags         = ["gke-node", "proyecto-asir-gke"]
