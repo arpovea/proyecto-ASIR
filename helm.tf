@@ -41,7 +41,7 @@ resource "helm_release" "helm_argocd" {
   values     = ["${file("values.yaml")}"]
 }
 
-# Desplegando ingress-controler con helm
+# Desplegando ingress-controler con helm para las herramientas
 resource "helm_release" "helm_ingress_controler_herramientas" {
   name       = "ingresscontr-herram"
   repository = "https://kubernetes.github.io/ingress-nginx"
