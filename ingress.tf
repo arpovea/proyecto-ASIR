@@ -9,7 +9,7 @@ resource "kubernetes_ingress" "ingress-calcetines" {
 
   spec {
     rule {
-      host = "calcetines.arp-zona.proyecto-asir.com"
+      host = "calcetines.arp-proyecto-asir.com"
       http {
         path {
           backend {
@@ -37,7 +37,7 @@ resource "kubernetes_ingress" "ingress-argocd" {
 
   spec {
     rule {
-      host = "argocd.arp-zona.proyecto-asir.com"
+      host = "argocd.arp-proyecto-asir.com"
       http {
         path {
           backend {
