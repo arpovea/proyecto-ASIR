@@ -60,3 +60,23 @@ resource "helm_release" "helm_ingress_controler_herramientas" {
     value = "herramientas"
   }
 }
+
+# Desplegando ingress-controler con helm para las herramientas
+resource "helm_release" "helm_ingress_controler_sock-shop" {
+  name       = "ingresscontr-calcet"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx"
+  namespace  = "sock-shop"
+  set {
+    name  = "controller.service.loadBalancerIP"
+    value = google_compute_address.ipv4_1.address
+  }
+  set {
+    name  = "controller.scope.enabled"
+    value = true
+  }
+  set {
+    name  = "controller.scope.namespace"
+    value = "sock-shop"
+  }
+}
