@@ -42,7 +42,7 @@ resource "kubernetes_ingress" "ingress-argocd" {
         path {
           backend {
             service_name = "argocd-server"
-            service_port = 443
+            service_port = 80
           }
 
           path = "/"
