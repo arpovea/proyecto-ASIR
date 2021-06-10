@@ -27,6 +27,10 @@ resource "google_container_cluster" "primary" {
       issue_client_certificate = false
     }
   }
+  depends_on = [
+    google_compute_network.vpc_proyecto_asir,
+    google_compute_subnetwork.subnet_proyecto_asir
+  ]
 }
 
 # Creamos los nodos despues de desplegar el cluster en este caso 2.

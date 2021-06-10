@@ -631,11 +631,11 @@ server:
     url: https://argocd.example.com
     # Argo CD instance label key
     application.instanceLabelKey: argocd.argoproj.io/instance
-    # repositories: |
-    #   - url: git@github.com:group/repo.git
-    #     sshPrivateKeySecret:
-    #       name: secret-name
-    #       key: sshPrivateKey
+    repositories: |
+      - url: git@github.com:arpovea/arp_demo_app.git
+        sshPrivateKeySecret:
+          name: argocd-repository-credentials
+          key: argocd
     #   - type: helm
     #     url: https://charts.helm.sh/stable
     #     name: stable
@@ -702,6 +702,7 @@ server:
       path: .
     destination:
       server: https://kubernetes.default.svc
+      namespace: sock-shop
     syncPolicy:
       automated:
         prune: true
@@ -1025,8 +1026,7 @@ configs:
     #     -----END CERTIFICATE-----
   # Creates a secret with optional repository credentials
   repositoryCredentials:
-    {
-    argocd-ssh-key:
+    argocd: |
       -----BEGIN OPENSSH PRIVATE KEY-----
       b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn
       NhAAAAAwEAAQAAAQEAwMEHG/oFWxgk143qojcgNfcAHbLUc6Uvec8tJ3P2vVeFHlK883bW
@@ -1053,8 +1053,8 @@ configs:
       A4hMVJjsFeaMnLc9qv9eejqsPzPV9+UW0Bd2fQI0ar+tolFxUY9GKhej/6ztCxjHbKasUm
       AY5ozyQXXC5Q8AmNHZt0OnDq/97bBLh3R9mbBF9Hfwxl2/h//sCmygnFqJSA/kjcYs0JFX
       +/zV7dnEtdpbYj2vAAAADGFkcmlhbkBBRFItMQECAwQFBg==
-      -----END OPENSSH PRIVATE KEY----- 
-      }
+      -----END OPENSSH PRIVATE KEY-----
+
     # sample-ssh-key: |
     # -----BEGIN RSA PRIVATE KEY-----
     # MIICXAIBAAKBgQCcmiVJXGUvL8zqWmRRETbCKgFadtjJ9WDQpSwiZzMiktpYBo0N

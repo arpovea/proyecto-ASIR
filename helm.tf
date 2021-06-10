@@ -23,6 +23,9 @@ resource "kubernetes_cluster_role_binding" "user" {
     name      = "system:masters"
     api_group = "rbac.authorization.k8s.io"
   }
+  depends_on = [
+    google_container_node_pool.primary_nodes
+  ]
 }
 
 # Creando namespace para argocd
@@ -30,6 +33,18 @@ resource "kubernetes_namespace" "herramientas" {
   metadata {
     name = "herramientas"
   }
+  depends_on = [
+    google_container_node_pool.primary_nodes
+  ]
+}
+# Creando namespace para argocd
+resource "kubernetes_namespace" "sock_shop" {
+  metadata {
+    name = "sock-shop"
+  }
+  depends_on = [
+    google_container_node_pool.primary_nodes
+  ]
 }
 
 # Desplegando argocd con helm
@@ -39,6 +54,10 @@ resource "helm_release" "helm_argocd" {
   chart      = "argo-cd"
   namespace  = "herramientas"
   values     = ["${file("values.yaml")}"]
+  depends_on = [
+    kubernetes_namespace.herramientas,
+    google_container_node_pool.primary_nodes
+  ]
 }
 
 # Desplegando ingress-controler con helm para las herramientas
@@ -59,9 +78,13 @@ resource "helm_release" "helm_ingress_controler_herramientas" {
     name  = "controller.scope.namespace"
     value = "herramientas"
   }
+  depends_on = [
+    kubernetes_namespace.herramientas,
+    google_container_node_pool.primary_nodes
+  ]
 }
 
-# Desplegando ingress-controler con helm para las herramientas
+# Desplegando ingress-controler con helm para las apps
 resource "helm_release" "helm_ingress_controler_sock-shop" {
   name       = "ingresscontr-calcet"
   repository = "https://kubernetes.github.io/ingress-nginx"
@@ -79,4 +102,8 @@ resource "helm_release" "helm_ingress_controler_sock-shop" {
     name  = "controller.scope.namespace"
     value = "sock-shop"
   }
+  depends_on = [
+    helm_release.helm_argocd,
+    kubernetes_namespace.sock_shop
+  ]
 }

@@ -23,6 +23,9 @@ resource "kubernetes_ingress" "ingress-calcetines" {
       }
     }
   }
+  depends_on = [
+    helm_release.helm_ingress_controler_sock-shop
+  ]
 }
 
 resource "kubernetes_ingress" "ingress-argocd" {
@@ -30,7 +33,7 @@ resource "kubernetes_ingress" "ingress-argocd" {
     name      = "ingress-argocd"
     namespace = "herramientas"
     annotations = {
-      "kubernetes.io/ingress.class" = "nginx"
+      "kubernetes.io/ingress.class"                  = "nginx"
       "nginx.ingress.kubernetes.io/backend-protocol" = "HTTPS"
     }
   }
@@ -51,4 +54,7 @@ resource "kubernetes_ingress" "ingress-argocd" {
       }
     }
   }
+  depends_on = [
+    helm_release.helm_ingress_controler_herramientas
+  ]
 }
