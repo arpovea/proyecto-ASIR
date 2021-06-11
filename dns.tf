@@ -19,8 +19,8 @@ resource "google_dns_record_set" "app_dns" {
   rrdatas      = [google_compute_address.ipv4_1.address]
   ttl          = 86400
   depends_on = [
-  helm_release.helm_ingress_controler_sock-shop
-]
+    helm_release.helm_ingress_controler_sock-shop
+  ]
 }
 
 #Añadiendo el registro "A" de tools a la zona dns 
