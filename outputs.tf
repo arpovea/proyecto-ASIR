@@ -1,4 +1,4 @@
-# Salidas de las variables
+# Salidas de las variables y recursos de terraform/google
 
 # ID proyecto y región
 
@@ -52,5 +52,10 @@ output "google_compute_global_address1" {
 
 output "google_compute_global_address2" {
   value       = google_compute_address.ipv4_2.address
+  description = "ipv4-address2"
+}
+
+output "google_dns_managed_zone_name_servers" {
+  value       = google_dns_managed_zone.parent_zone.name_servers
   description = "ipv4-address2"
 }
