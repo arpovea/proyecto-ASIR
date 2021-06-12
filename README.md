@@ -4,7 +4,7 @@ En este repositorio se encuentra el TFG para el ciclo de ASIR, realizado por Adr
 
 En este proyecto se pueden encontrar los siguientes contenidos realizados con Terraform:
 
-  - [Descripción de los distintos elementos de Terraform.](descripción-de-los-distintos-elementosdde-terraform)
+  - [Descripción de los distintos elementos de Terraform.](descripción-de-los-distintos-elementos-de-terraform)
 
   - Configuración de "providers" (Google,Kubernetes,Helm).
 
