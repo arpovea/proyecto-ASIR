@@ -1,10 +1,10 @@
-## Despligue de Kubernetes en Google Cloud con Terraform + Helm
+# Despligue de Kubernetes en Google Cloud con Terraform + Helm
 
 En este repositorio se encuentra el TFG para el ciclo de ASIR, realizado por Adrián Rodríguez Povea.
 
 En este proyecto se pueden encontrar los siguientes contenidos realizados con Terraform:
 
-  - [Descripción de los distintos elementos de Terraform.](descripción-de-los-distintos-elementos-de-terraform)
+  - [Descripción de los distintos elementos de Terraform](descripción-de-los-distintos-elementos-de-terraform)
 
   - Configuración de "providers" (Google,Kubernetes,Helm).
 
@@ -20,7 +20,7 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).
 
-### Descripción de los distintos elementos de Terraform.
+## Descripción de los distintos elementos de Terraform
 
 Descripción de un bloque en terraform:
 ```
