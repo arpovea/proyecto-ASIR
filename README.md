@@ -278,7 +278,8 @@ resource "google_container_node_pool" "primary_nodes" {
     max_node_count = 5
     min_node_count = 2
   }
-  # Ignoramos el "node_count" para que cuando autoescale no intente modificarlo, (cuando difiere del número de nodos indicados inicialmente)
+  # Ignoramos el "node_count" para que cuando autoescale no intente
+  # modificarlo, (cuando difiere del número de nodos indicados inicialmente)
   lifecycle {
     ignore_changes = [
       node_count,
