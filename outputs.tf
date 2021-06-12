@@ -50,6 +50,8 @@ output "google_compute_global_address1" {
   description = "ipv4-address1"
 }
 
+# IPs
+
 output "google_compute_global_address2" {
   value       = google_compute_address.ipv4_2.address
   description = "ipv4-address2"
