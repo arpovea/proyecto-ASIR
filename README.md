@@ -1,8 +1,4 @@
-___
-
 # Despligue de Kubernetes en GCP con Terraform + Helm
-
-***
 
 En este repositorio se encuentra el TFG para el ciclo de ASIR, realizado por Adrián Rodríguez Povea.
 
@@ -24,7 +20,6 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - [Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).](#despligue-de-recursos-y-aplicaciones-mediante-helm-argocd-ingresscontroller)
 
-***
 
 ## Descripción de los distintos elementos de Terraform.
 
@@ -56,7 +51,6 @@ Hay distintos tipos de elementos en terraform, los que se han utilizado son:
   - Output:    
     Son valores de retorno de las variables o bloques de Terraform.
 
-***
 
 ## Configuración de "providers" (Google,Kubernetes,Helm).
 
@@ -127,9 +121,10 @@ provider "helm" {
 
 Como anteriormente se hace uso de un tipo "data" para obtener algunos de los valores para la configuracion de este bloque de provider ademas de otras variables para obtener los certificados y endpoint del cluster.
 
-***
 
 ## Creación de estado remoto de terraform
+
+
 ## Creación de VPC y subnet.
 ## Reserva de IPs.
 ## Despligue de GKE.
