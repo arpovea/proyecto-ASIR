@@ -199,9 +199,10 @@ resource "google_compute_address" "ipv4_1" {
 resource "google_compute_address" "ipv4_2" {
   name = "ipv4-address2"
 }
-
-Estas IPs son asignadas por el proveedor, se puede averiguar cuales a asignado mediante los outputs que comentaremos mas adelante.
 ```
+Estas IPs son asignadas por el proveedor, se puede averiguar cuales a asignado mediante los outputs que comentaremos mas adelante.
+
+
 ## Despligue de GKE.
 
 Una vez tenemos configurado el plugin del proveedor de google y las credenciales al proyecto, es hora de crear nuestro cluster utilizando el servicio de google llamado GKE (Google Kubernetes Engine) se utiliza el fichero "gke.tf"
