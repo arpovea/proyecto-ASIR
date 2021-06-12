@@ -4,9 +4,9 @@ En este repositorio se encuentra el TFG para el ciclo de ASIR, realizado por Adr
 
 En este proyecto se pueden encontrar los siguientes contenidos realizados con Terraform:
 
-  - [Descripción de los distintos elementos de Terraform](#descripción-de-los-distintos-elementos-de-terraform)
+  - [Descripción de los distintos elementos de Terraform.](#descripción-de-los-distintos-elementos-de-terraform)
 
-  - Configuración de "providers" (Google,Kubernetes,Helm).
+  - [Configuración de "providers" (Google,Kubernetes,Helm).](#descripción-de-los-distintos-elementos-de-terraform)
 
   - Creación de estado remoto de terraform.
 
@@ -20,7 +20,7 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).
 
-## Descripción de los distintos elementos de Terraform
+## Descripción de los distintos elementos de Terraform.
 
 Descripción de un bloque en terraform:
 ```
@@ -48,4 +48,5 @@ Hay distintos tipos de elementos en terraform, los que se han utilizado son:
      Sirven como parámetros para un bloque de Terraform, por lo que los usuarios pueden personalizar el comportamiento sin editar la fuente.
   - Output:    
     Son valores de retorno de las variables o bloques de Terraform.
-  
+
+## Configuración de "providers" (Google,Kubernetes,Helm).
