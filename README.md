@@ -23,10 +23,11 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 ### Descripción de los distintos elementos de Terraform.
 
 Descripción de un bloque en terraform:
-
+''' 
 resource "google_compute_network" "vpc_terraform" {
   name = "terraform-network"
 }
+'''
 
 El primer nombre es el nombre del servicio en la nube (google), el segundo su nombre en terraform, y el "name" es el nombre que se le asigna al crearse en la nube.
 
