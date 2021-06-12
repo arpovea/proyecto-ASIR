@@ -10,7 +10,7 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - [Creación de estado remoto de Terraform.](#creación-de-estado-remoto-de-terraform)
 
-  - [Creación de VPC y subnet.](#creación-de-vpc-y-subnet)
+  - [Creación de VPC network y subnetwork.](#creación-de-vpc-network-y-subnetwork)
 
   - [Reserva de IPs.](#reserva-de-ips)
 
