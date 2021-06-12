@@ -6,7 +6,7 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - [Descripción de los distintos elementos de Terraform.](#descripción-de-los-distintos-elementos-de-terraform)
 
-  - [Configuración de "providers" (Google,Kubernetes,Helm).](#descripción-de-los-distintos-elementos-de-terraform)
+  - [Configuración de "providers" (Google,Kubernetes,Helm).](#configuración-de-providers-googlekuberneteshelm)
 
   - Creación de estado remoto de terraform.
 
@@ -50,3 +50,9 @@ Hay distintos tipos de elementos en terraform, los que se han utilizado son:
     Son valores de retorno de las variables o bloques de Terraform.
 
 ## Configuración de "providers" (Google,Kubernetes,Helm).
+## Creación de estado remoto de terraform.
+## Creación de VPC y subnet.
+## Reserva de IPs.
+## Despligue de GKE.
+## Permisos de usuario.
+## Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).
