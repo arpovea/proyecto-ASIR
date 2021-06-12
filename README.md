@@ -57,7 +57,7 @@ Opciones interesantes de los bloques de Terraform:
 
 ## Configuración de "providers" (Google,Kubernetes,Helm).
 
-Como se ha visto en el anterior apartado se necesita iniciar el plugin del proveedor que Terraform utilizaŕa para comunicarse con la nube pública en este caso Google Cloud.
+Como se ha visto en el anterior apartado se necesita iniciar el plugin del proveedor que Terraform utilizará para comunicarse con la nube pública en este caso Google Cloud.
 
 Esta configuración se realiza en el fichero "provider.tf":
 
@@ -83,11 +83,11 @@ provider "google" {
 }
 ```
 
-Como podemos ver primero se carga el plugin a utilizar por terraform de google y mediante unas credenciales(token) y parametros se le hace objetivo a un proyecto.
+Como podemos ver primero se carga el plugin a utilizar por terraform de google y mediante unas credenciales (token) y parámetros se le hace objetivo a un proyecto.
 
 A continuación se utiliza el provider de Kuberentes:
 
-El proveedor de Kubernetes (K8S) se utiliza para interactuar con los recursos admitidos por Kubernetes. El proveedor debe configurarse con las credenciales adecuadas antes de que se pueda utilizar. Ademas de la autenticacíon de la cuenta se necesita que el cluster este previamente creado en este caso se utiliza GKE que se comentará mas adelante.
+El proveedor de Kubernetes (K8S) se utiliza para interactuar con los recursos admitidos por Kubernetes. El proveedor debe configurarse con las credenciales adecuadas antes de que se pueda utilizar. Además de la autenticacíon de la cuenta, se necesita que el cluster este previamente creado, en este caso se utiliza GKE que se comentará más adelante.
 
 ```
 # Obtener datos de la cuenta para utilizarlos. en este caso para el token de autenticación.
@@ -101,14 +101,14 @@ provider "kubernetes" {
 }
 ```
 
-Como se puede observar se hace uso de un tipo "data", ademas de las otras variables para obtener los datos de la configuración de este bloque de "provider"
+Como se puede observar se hace uso de un tipo "data", además de las otras variables para obtener los datos de la configuración de este bloque de "provider"
 
 También se configurará el proveedor de Helm:
 
-El proveedor de Helm se utiliza para implementar paquetes de software en Kubernetes. El proveedor debe configurarse con las credenciales adecuadas antes de que se pueda utilizar, como en el caso anterior tambien necesita que el cluster este previamente creado.
+El proveedor de Helm se utiliza para implementar paquetes de software en Kubernetes. El proveedor debe configurarse con las credenciales adecuadas antes de que se pueda utilizar, como en el caso anterior también necesita que el cluster este previamente creado.
 
 ```
-# Configuración para desplegar mediante helm, se utiliza un provider. (Se hace uso tambien del data)
+# Configuración para desplegar mediante helm, se utiliza un provider. (Se hace uso también del data)
 provider "helm" {
 
   kubernetes {
@@ -122,14 +122,14 @@ provider "helm" {
 }
 ```
 
-Como anteriormente se hace uso de un tipo "data" para obtener algunos de los valores para la configuración de este bloque de provider ademas de otras variables para obtener los certificados y endpoint del cluster.
+Como anteriormente se hace uso de un tipo "data" para obtener algunos de los valores para la configuración de este bloque de provider además de otras variables para obtener los certificados y endpoint del cluster.
 
 
 ## Creación de estado remoto de terraform
 
-De forma predeterminada, Terraform almacena el estado localmente en un archivo llamado "terraform.tfstate". Cuando se trabaja con Terraform en equipo, el uso de un archivo local complica el uso de Terraform porque cada usuario debe asegurarse de tener siempre los datos de estado más recientes antes de ejecutar Terraform y asegurarse de que nadie más ejecute Terraform al mismo tiempo. por ello se escriben los datos del estado en un almacén de datos remoto,que luego se puede compartir entre todos los miembros de un equipo.
+De forma predeterminada, Terraform almacena el estado localmente en un archivo llamado "terraform.tfstate". Cuando se trabaja con Terraform en equipo, el uso de un archivo local complica el uso de Terraform porque cada usuario debe asegurarse de tener siempre los datos de estado más recientes antes de ejecutar Terraform y asegurarse de que nadie más ejecute Terraform al mismo tiempo. Por ello se escriben los datos del estado en un almacén de datos remoto, que luego se puede compartir entre todos los miembros de un equipo.
 
-Terraform admite el almacenamiento de este estado en Google Cloud Storage ademas de otras opciones, por lo que primero se realiza la creación de este recurso en el fichero "storages.tf"
+Terraform admite el almacenamiento de este estado en Google Cloud Storage además de otras opciones, por lo que primero se realiza la creación de este recurso en el fichero "storages.tf"
 
 ```
 #Bucket para el estado remoto de terraform
@@ -152,7 +152,7 @@ resource "google_storage_bucket" "terraform_bucket" {
 }
 ```
 
-En este bloque de Terraform se configura el almacenamiento tipo "bucket" el cual le añadimos unas opciones,como el versionado y que se vaya borrando cuando haya 5 nuevas versiones de lo almacenado.
+En este bloque de Terraform se configura el almacenamiento tipo "bucket" el cual le añadimos unas opciones, como el versionado y que se vaya borrando cuando haya 5 nuevas versiones de lo almacenado.
 
 El estado remoto se implementa mediante un backend, que se puede configurar en el módulo raíz de su configuración, en este caso se ha configurado en el fichero "provider.tf":
 
@@ -170,7 +170,7 @@ terraform {
 
 ## Creación de VPC network y subnetwork.
 
-Ahora se creará una Virtual Private Cloud network para utilizar en nuestro proyecto, asi como una subnetwork que utilizará nuestro cluster GKE, en este caso el fichero utilizado es "networking.tf"
+Ahora se creará una Virtual Private Cloud network para utilizar en nuestro proyecto, así como una subnetwork que utilizará nuestro cluster GKE, en este caso el fichero utilizado es "networking.tf"
 
 ```
 # VPC
@@ -203,23 +203,23 @@ resource "google_compute_address" "ipv4_2" {
   name = "ipv4-address2"
 }
 ```
-Estas IPs son asignadas por el proveedor, se puede averiguar cuales a asignado mediante los outputs que comentaremos mas adelante.
+Estas IPs son asignadas por el proveedor, se puede averiguar cuales ha asignado mediante los outputs que comentaremos más adelante.
 
 
 ## Despligue de GKE.
 
 Una vez tenemos configurado el plugin del proveedor de google y las credenciales al proyecto, es hora de crear nuestro cluster utilizando el servicio de google llamado GKE (Google Kubernetes Engine) se utiliza el fichero "gke.tf"
 
-Se despliega un cluster zonal, esto quiere decir, que se despliga el cluster en una zona especifica de la región, ya que si esto no se especifica se crearía un cluster regional y duplicaría los nodos por cada zona de la región, lo cual no es el proposito de este proyecto.
+Se despliega un cluster zonal, esto quiere decir, que se despliga el cluster en una zona especifica de la región, ya que si esto no se especifica se crearía un cluster regional y duplicaría los nodos por cada zona de la región, lo cual no es el propósito de este proyecto.
 
-Ademas se necesita tener el binario de "gcloud", ya que nos hara falta para la configuración del contexto en el fichero .kube ademas nos valdrá para otras gestiones mediante la consola como cambiar permisos a usuario del proyecto.
+Además, se necesita tener el binario de "gcloud", ya que nos hará falta para la configuración del contexto en el fichero .kube además nos valdrá para otras gestiones mediante la consola como cambiar permisos a usuario del proyecto.
 
 Una vez instalado gcloud, se ejecutaran los siguientes comandos:
 
 `gcloud init` --> El cual solicitará una serie de información como nuestro correo y el proyecto al que hacer objetivo.
 `gcloud applcation-default login` --> Con este comando se inicia sesión con las opciones del comando anterior (abre un navegador), además hace que esta conexión sea la que se selecciona por defecto.
 
-Ahora realizariamos el comando de Terraform para aplicar la configuración del fichero, en [esta](#comandos-terraform) sección comentaremos los comandos mas usados. Hablemos de la configuración del fichero "gke.tf"
+Ahora realizariamos el comando de Terraform para aplicar la configuración del fichero, en [esta](#comandos-terraform) sección comentaremos los comandos más usados. Hablemos de la configuración del fichero "gke.tf"
 
 ```
 # GKE cluster, crea el cluster y borra el nodo por defecto.
@@ -258,7 +258,7 @@ resource "google_container_cluster" "primary" {
 }
 ```
 
-Lo primero que se realiza es crear el cluster, el cual por defecto al iniciarse crea un nodo, el cual es recomendable dejar que cree (para su completo despligue) y luego lo borre, se añaden parametros para su configuración como son:
+Lo primero que se realiza es crear el cluster, el cual por defecto al iniciarse crea un nodo, el cual es recomendable dejar que cree (para su completo despligue) y luego lo borre, se añaden parámetros para su configuración como son:
   
   - http_load_balancing --> Balancedor por defecto del cluster
   - horizontal_pod_autoscaling --> Auto escalado horizontal de los pods
@@ -266,7 +266,7 @@ Lo primero que se realiza es crear el cluster, el cual por defecto al iniciarse 
 Una vez el cluster esta desplegado, no tiene ningún nodo "worker" por lo que se añadirán y configurarán con el siguiente bloque de terraform:
 
 ```
-# Creamos los nodos despues de desplegar el cluster en este caso 2.
+# Creamos los nodos después de desplegar el cluster en este caso 2.
 resource "google_container_node_pool" "primary_nodes" {
   name       = "${google_container_cluster.primary.name}-node-pool"
   location   = var.zone
@@ -307,7 +307,7 @@ resource "google_container_node_pool" "primary_nodes" {
 
 Esto configura el grupo de nodos trabajadores, los cuales como se pueden ver en los comentarios se configura al principio con dos nodos iniciales, y luego pueden escalar hasta 5, el tipo de escalado es según las solicitudes de recursos (no el uso real) de los pods que se ejecutan en los nodos del grupo.
 
-Además se configura el tipo de máquina a utilizar para los nodos, en este caso el tipo "e2-medium" que consta de 1 VCPU y 4GB de RAM también nos permite realizar el autoescalado, otro tipo de máquinas no lo permite como las de la serie N1.
+Además, se configura el tipo de máquina a utilizar para los nodos, en este caso el tipo "e2-medium" que consta de 1 VCPU y 4GB de RAM también nos permite realizar el autoescalado, otro tipo de máquinas no lo permite como las de la serie N1.
 
 Una vez desplegado el cluster nos queda configurar el contexto a utilizar por "kubectl" para ello utilizaremos de nuevo "gcloud" para ello:
 
