@@ -20,7 +20,7 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).
 
-## Descripción de los distintos elementos de Terraform
+## Descripcion de los distintos elementos de Terraform
 
 Descripción de un bloque en terraform:
 ```
