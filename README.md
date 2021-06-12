@@ -51,6 +51,9 @@ Hay distintos tipos de elementos en Terraform, los que se han utilizado son:
   - Output:    
     Son valores de retorno de las variables o bloques de Terraform.
 
+Opciones interesantes de los bloques de Terraform:
+
+  - depend_on: Cuando se le quiere indicar a Terraform un orden de creación de los distintos recursos.
 
 ## Configuración de "providers" (Google,Kubernetes,Helm).
 
@@ -207,16 +210,110 @@ Estas IPs son asignadas por el proveedor, se puede averiguar cuales a asignado m
 
 Una vez tenemos configurado el plugin del proveedor de google y las credenciales al proyecto, es hora de crear nuestro cluster utilizando el servicio de google llamado GKE (Google Kubernetes Engine) se utiliza el fichero "gke.tf"
 
-Ademas se necesita tener el binario de "gcloud", ya que nos hara falta para la configuración del contexto en el fichero .kube ademas nos valdrá para otras gestiones mediante la consola como cambiar permisos a usuario del proyecto.
-
 Se despliega un cluster zonal, esto quiere decir, que se despliga el cluster en una zona especifica de la región, ya que si esto no se especifica se crearía un cluster regional y duplicaría los nodos por cada zona de la región, lo cual no es el proposito de este proyecto.
+
+Ademas se necesita tener el binario de "gcloud", ya que nos hara falta para la configuración del contexto en el fichero .kube ademas nos valdrá para otras gestiones mediante la consola como cambiar permisos a usuario del proyecto.
 
 Una vez instalado gcloud, se ejecutaran los siguientes comandos:
 
 `gcloud init` --> El cual solicitará una serie de información como nuestro correo y el proyecto al que hacer objetivo.
 `gcloud applcation-default login` --> Con este comando se inicia sesión con las opciones del comando anterior (abre un navegador), además hace que esta conexión sea la que se selecciona por defecto.
 
-Ahora realizariamos nuestro comando para aplicar la configuración del fichero, en [esta](#comandos-terraform) seccion comentaremos los comandos mas usados.
+Ahora realizariamos el comando de Terraform para aplicar la configuración del fichero, en [esta](#comandos-terraform) sección comentaremos los comandos mas usados. Hablemos de la configuración del fichero "gke.tf"
+
+```
+# GKE cluster, crea el cluster y borra el nodo por defecto.
+resource "google_container_cluster" "primary" {
+  name     = "proyecto-asir-gke"
+  location = var.zone
+
+  remove_default_node_pool = true
+  initial_node_count       = 1
+
+  # Deshabilitamos el balanceador por defecto y el autoescalado horizontal de los pods.
+  addons_config {
+    http_load_balancing {
+      disabled = true
+    }
+    horizontal_pod_autoscaling {
+      disabled = true
+    }
+  }
+
+  network    = google_compute_network.vpc_proyecto_asir.name
+  subnetwork = google_compute_subnetwork.subnet_proyecto_asir.name
+
+  master_auth {
+    username = var.gke_username
+    password = var.gke_password
+
+    client_certificate_config {
+      issue_client_certificate = false
+    }
+  }
+  depends_on = [
+    google_compute_network.vpc_proyecto_asir,
+    google_compute_subnetwork.subnet_proyecto_asir
+  ]
+}
+```
+
+Lo primero que se realiza es crear el cluster, el cual por defecto al iniciarse crea un nodo, el cual es recomendable dejar que cree (para su completo despligue) y luego lo borre, se añaden parametros para su configuración como son:
+  
+  - http_load_balancing --> Balancedor por defecto del cluster
+  - horizontal_pod_autoscaling --> Auto escalado horizontal de los pods
+
+Una vez el cluster esta desplegado, no tiene ningún nodo "worker" por lo que se añadirán y configurarán con el siguiente bloque de terraform:
+
+```
+# Creamos los nodos despues de desplegar el cluster en este caso 2.
+resource "google_container_node_pool" "primary_nodes" {
+  name       = "${google_container_cluster.primary.name}-node-pool"
+  location   = var.zone
+  cluster    = google_container_cluster.primary.name
+  node_count = var.gke_num_nodes
+
+  # Addon GKE autoscaler tipo balanced. Autoescala hasta 5
+  autoscaling {
+    max_node_count = 5
+    min_node_count = 2
+  }
+  # Ignoramos el "node_count" para que cuando autoescale no intente modificarlo, (cuando difiere del número de nodos indicados inicialmente)
+  lifecycle {
+    ignore_changes = [
+      node_count,
+    ]
+  }
+  node_config {
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+    ]
+
+    labels = {
+      env = var.project_id
+    }
+
+
+    # preemptible  = true
+    machine_type = "e2-medium"
+    tags         = ["gke-node", "proyecto-asir-gke"]
+    metadata = {
+      disable-legacy-endpoints = "true"
+    }
+  }
+}
+```
+
+Esto configura el grupo de nodos trabajadores, los cuales como se pueden ver en los comentarios se configura al principio con dos nodos iniciales, y luego pueden escalar hasta 5, el tipo de escalado es según las solicitudes de recursos (no el uso real) de los pods que se ejecutan en los nodos del grupo.
+
+Además se configura el tipo de máquina a utilizar para los nodos, en este caso el tipo "e2-medium" que consta de 1 VCPU y 4GB de RAM también nos permite realizar el autoescalado, otro tipo de máquinas no lo permite como las de la serie N1.
+
+Una vez desplegado el cluster nos queda configurar el contexto a utilizar por "kubectl" para ello utilizaremos de nuevo "gcloud" para ello:
+
+`gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --zone $(terraform output -raw zone)`
+
+Con esto queda desplegado el cluster para poder empezar a desplegar y configurar el entorno.
 
 ## Proyecto en Google, credenciales de Google, permisos, habilitación de APIS
 ## Permisos de usuario.
