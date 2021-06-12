@@ -319,4 +319,47 @@ Con esto queda desplegado el cluster para poder empezar a desplegar y configurar
 ## Proyecto en Google, credenciales de Google, permisos, habilitación de APIS
 ## Permisos de usuario.
 ## Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).
+
+Una vez que se han establecidos los permisos necesarios, vamos a desplegar en primer lugar nuestro software en este caso ArgoCD una herramienta de GitOps para ello se utilizan los siguiente bloques de terraform que estan en el fichero "helm.tf"
+
+```
+# Creando namespace para argocd utlizando "kubernetes"
+resource "kubernetes_namespace" "herramientas" {
+  metadata {
+    name = "herramientas"
+  }
+  depends_on = [
+    google_container_node_pool.primary_nodes
+  ]
+}
+# Creando namespace para argocd
+resource "kubernetes_namespace" "sock_shop" {
+  metadata {
+    name = "sock-shop"
+  }
+  depends_on = [
+    google_container_node_pool.primary_nodes
+  ]
+}
+```
+
+En primer lugar se utiliza un bloque de terraform que crea un par de namespaces utilizando "kubernetes" (previamente lo agregamos a los providers), luego con el siguiente se despliega ArgoCD
+
+```
+# Desplegando argocd con helm
+resource "helm_release" "helm_argocd" {
+  name       = "argocd"
+  repository = "https://argoproj.github.io/argo-helm"
+  chart      = "argo-cd"
+  namespace  = "herramientas"
+  values     = ["${file("values.yaml")}"]
+  depends_on = [
+    kubernetes_namespace.herramientas,
+    google_container_node_pool.primary_nodes
+  ]
+}
+```
+
+Los parametros indican el repositorio a utilizar, el "chart" de dicho repositorio, el namespace donde se tiene que desplegar y el fichero values.yml donde estan los parametros de configuración, dicho fichero esta configurado de tal manera que agrega un repositorio privado y despliega una aplicación demo tipo microservicio.
+
 ## Comandos Terraform.
