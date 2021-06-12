@@ -206,7 +206,14 @@ Estas IPs son asignadas por el proveedor, se puede averiguar cuales a asignado m
 
 Una vez tenemos configurado el plugin del proveedor de google y las credenciales al proyecto, es hora de crear nuestro cluster utilizando el servicio de google llamado GKE (Google Kubernetes Engine) se utiliza el fichero "gke.tf"
 
+Ademas se necesita tener el binario de "gcloud", ya que nos hara falta para la configuración del contexto en el fichero .kube ademas nos valdrá para otras gestiones mediante la consola como cambiar permisos a usuario del proyecto.
 
+Se despliega un cluster zonal, esto quiere decir, que se despliga el cluster en una zona especifica de la región, ya que si esto no se especifica se crearía un cluster regional y duplicaría los nodos por cada zona de la región, lo cual no es el proposito de este proyecto.
+
+Una vez instalado gcloud, se ejecutaran los siguientes comandos:
+
+`gcloud init` --> El cual solicitara una serie de información como nuestro correo y el proyecto al que hacer objetivo.
+`gcloud applcation-default login` --> Con este comando se inicia sesioń con las opciones del comando anterior (abre un navegador) y ademas hace esta conexión la de por defecto.
+## Proyecto en Google, credenciales de Google, permisos, habilitación de APIS
 ## Permisos de usuario.
 ## Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).
-## Proyecto en Google, credenciales de Google, permisos, habilitación de APIS
