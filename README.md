@@ -50,6 +50,10 @@ Hay distintos tipos de elementos en terraform, los que se han utilizado son:
     Son valores de retorno de las variables o bloques de Terraform.
 
 ## Configuración de "providers" (Google,Kubernetes,Helm).
+
+Como se ha visto en el anterior apartado se necesita iniciar el el proveedor que terraform utilizaŕa para comunicarse con la nube publica en este caso Google Cloud.
+
+Esta configuración se realiza en el fichero
 ## Creación de estado remoto de terraform.
 ## Creación de VPC y subnet.
 ## Reserva de IPs.
