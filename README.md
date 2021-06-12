@@ -213,8 +213,12 @@ Se despliega un cluster zonal, esto quiere decir, que se despliga el cluster en 
 
 Una vez instalado gcloud, se ejecutaran los siguientes comandos:
 
-`gcloud init` --> El cual solicitara una serie de información como nuestro correo y el proyecto al que hacer objetivo.
-`gcloud applcation-default login` --> Con este comando se inicia sesioń con las opciones del comando anterior (abre un navegador) y ademas hace esta conexión la de por defecto.
+`gcloud init` --> El cual solicitará una serie de información como nuestro correo y el proyecto al que hacer objetivo.
+`gcloud applcation-default login` --> Con este comando se inicia sesión con las opciones del comando anterior (abre un navegador), además hace que esta conexión sea la que se selecciona por defecto.
+
+Ahora realizariamos nuestro comando para aplicar la configuración del fichero, 
+
 ## Proyecto en Google, credenciales de Google, permisos, habilitación de APIS
 ## Permisos de usuario.
 ## Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).
+## Comandos Terraform.
