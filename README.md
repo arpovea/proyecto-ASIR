@@ -188,8 +188,25 @@ Esto crea por defecto una red VPC en cada región, y luego en la región que hem
 
 ## Reserva de IPs.
 
+Para exporner las aplicaciones al exterior mediante los "ingress controller" necesitamos reservar dos IPs para ello se utiliza el fichero "ips.tf"
 
+```
+#IP fijas para los ingress
+resource "google_compute_address" "ipv4_1" {
+  name = "ipv4-address1"
+}
+
+resource "google_compute_address" "ipv4_2" {
+  name = "ipv4-address2"
+}
+
+Estas IPs son asignadas por el proveedor, se puede averiguar cuales a asignado mediante los outputs que comentaremos mas adelante.
+```
 ## Despligue de GKE.
+
+Una vez tenemos configurado el plugin del proveedor de google y las credenciales al proyecto, es hora de crear nuestro cluster utilizando el servicio de google llamado GKE (Google Kubernetes Engine) se utiliza el fichero "gke.tf"
+
+
 ## Permisos de usuario.
 ## Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).
 ## Proyecto en Google, credenciales de Google, permisos, habilitación de APIS
