@@ -22,7 +22,7 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - [Comandos Terraform y gcloud.](#comandos-terraform-y-gcloud)
 
-  
+
 ## Descripción de los distintos elementos de Terraform.
 
 Descripción de un bloque en Terraform:
@@ -375,15 +375,19 @@ Para realizar todas las tareas anteriores se han realizado previamente algunas c
 
   - Habilitar APIs:    
     En la siguiente imagen se muestran las APIs necesarias para la creación de todos los recursos que se han mencionado anteriormente, algunas activadas por defecto otras hay que habilitarlas manualmente:    
+    
       ![APIs](/doc/imag/APIs-enabled.png)    
 
   - Miembros/claves asociadas del Proyecto:    
     A continuación se añade una captura con las cuentas de servicios existentes en el proyecto, alguna se crea automaticamente al habilitar las APIs:    
+
       ![cuentas-servicios-proyecto](/doc/imag/cuentas-servicios-proyecto.png)    
 
   - Credenciales y permisos del usuario del proyecto:    
     Como se puede obsevar en las imagenes anteriores lo usuarios pertenecientes a un proyecto tiene distintos roles que le concede permisos sobre los distintos componentes de la nube, desde editor del proyecto, hasta administrador de GKE, entre miles de cosas, dependiendo de lo que se quiera realizar con la cuenta de servicio, en las siguiente imagenes se verá los permisos que tiene el la cuenta de servicio de nuestro proyecto, y una muestra de como se puede agregar los permisos via web y un comando de ejemplo para hacerlo via CLI:    
+
       ![permisos-proyecto](/doc/imag/permisos-proyecto.png)    
+
       ![agregando-permisos-proyecto](/doc/imag/agregando-permisos-proyecto.png)    
       ```
       gcloud projects add-iam-policy-binding velvety-outcome-308412 --member=serviceAccount:proyecto-asir@velvety-outcome-308412.iam.gserviceaccount.com --role=roles/container.admin
