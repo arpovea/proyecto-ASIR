@@ -316,30 +316,6 @@ gcloud container clusters get-credentials $(terraform output -raw kubernetes_clu
 
 Con esto queda desplegado el cluster para poder empezar a desplegar y configurar el entorno.
 
-## Proyecto en Google, credenciales de Google, permisos, habilitación de APIS
-
-Para realizar estas tareas se han realizado previamente algunas configuraciones en la plataforma web de google:
-
-  - Creación de proyecto:    
-    Previamente se ha creado el proyecto vía web, es mas sencillo sobre todo cuando es con la cuenta gratuita, ya que piden datos bancarios y demas para la creacion de un nuevo proyecto.    
-
-  - Habilitar APIs:    
-    En la siguiente imagen se muestran las APIs necesarias para la creación de todos los recursos que se han mencionado anteriormente, algunas activadas por defecto otras hay que habilitarlas manualmente:    
-      ![APIs](/doc/imag/APIs-enabled.png)    
-
-  - Miembros/claves asociadas del Proyecto:    
-    A continuación se añade una captura con las cuentas de servicios existentes en el proyecto, alguna se crea automaticamente al habilitar las APIs:    
-      ![cuentas-servicios-proyecto](/doc/imag/cuentas-servicios-proyecto.png)    
-
-  - Credenciales y permisos del usuario del proyecto:    
-    Como se puede obsevar en las imagenes anteriores lo usuarios pertenecientes a un proyecto tiene distintos roles que le concede permisos sobre los distintos componentes de la nube, desde editor del proyecto, hasta administrador de GKE, entre miles de cosas, dependiendo de lo que se quiera realizar con la cuenta de servicio, en las siguiente imagenes se verá los permisos que tiene el la cuenta de servicio de nuestro proyecto, y una muestra de como se puede agregar los permisos via web y un comando de ejemplo para hacerlo via CLI:    
-      ![permisos-proyecto](/doc/imag/permisos-proyecto.png)    
-      ![agregando-permisos-proyecto](/doc/imag/agregando-permisos-proyecto.png)    
-      ```
-      gcloud projects add-iam-policy-binding velvety-outcome-308412 --member=serviceAccount:proyecto-asir@velvety-outcome-308412.iam.gserviceaccount.com --role=roles/container.admin
-      ```    
-    
-    Para ver mas datos sobre los roles distintos roles del cluster pulso [aquí](https://cloud.google.com/kubernetes-engine/docs/how-to/iam).    
 
 ## Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).
 
@@ -384,6 +360,33 @@ resource "helm_release" "helm_argocd" {
 ```
 
 Los parametros indican el repositorio a utilizar, el "chart" de dicho repositorio, el namespace donde se tiene que desplegar y el fichero values.yml donde estan los parametros de configuración, dicho fichero esta configurado de tal manera que agrega un repositorio privado y despliega una aplicación demo tipo microservicio.
+
+
+## Proyecto en Google, APIs, credenciales,roles y permisos
+
+Para realizar todas las tareas anteriores se han realizado previamente algunas configuraciones en la plataforma web de google, o por CLI:
+
+  - Creación de proyecto:    
+    Previamente se ha creado el proyecto vía web, es mas sencillo sobre todo cuando es con la cuenta gratuita, ya que piden datos bancarios y demas para la creacion de un nuevo proyecto.    
+
+  - Habilitar APIs:    
+    En la siguiente imagen se muestran las APIs necesarias para la creación de todos los recursos que se han mencionado anteriormente, algunas activadas por defecto otras hay que habilitarlas manualmente:    
+      ![APIs](/doc/imag/APIs-enabled.png)    
+
+  - Miembros/claves asociadas del Proyecto:    
+    A continuación se añade una captura con las cuentas de servicios existentes en el proyecto, alguna se crea automaticamente al habilitar las APIs:    
+      ![cuentas-servicios-proyecto](/doc/imag/cuentas-servicios-proyecto.png)    
+
+  - Credenciales y permisos del usuario del proyecto:    
+    Como se puede obsevar en las imagenes anteriores lo usuarios pertenecientes a un proyecto tiene distintos roles que le concede permisos sobre los distintos componentes de la nube, desde editor del proyecto, hasta administrador de GKE, entre miles de cosas, dependiendo de lo que se quiera realizar con la cuenta de servicio, en las siguiente imagenes se verá los permisos que tiene el la cuenta de servicio de nuestro proyecto, y una muestra de como se puede agregar los permisos via web y un comando de ejemplo para hacerlo via CLI:    
+      ![permisos-proyecto](/doc/imag/permisos-proyecto.png)    
+      ![agregando-permisos-proyecto](/doc/imag/agregando-permisos-proyecto.png)    
+      ```
+      gcloud projects add-iam-policy-binding velvety-outcome-308412 --member=serviceAccount:proyecto-asir@velvety-outcome-308412.iam.gserviceaccount.com --role=roles/container.admin
+      ```    
+    
+    Para ver mas datos sobre los roles distintos roles del cluster pulso [aquí](https://cloud.google.com/kubernetes-engine/docs/how-to/iam).    
+
 
 ## Comandos Terraform y gcloud.
 
