@@ -61,3 +61,8 @@ output "google_dns_managed_zone_name_servers" {
   value       = google_dns_managed_zone.parent_zone.name_servers
   description = "ipv4-address2"
 }
+
+# Value ssh-key
+output "SSH_Argocd" {
+  value = var.SSH_Argocd
+}

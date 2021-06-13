@@ -29,3 +29,7 @@ variable "gke_password" {
   #  default     = ""
   description = "gke password"
 }
+
+variable "SSH_Argocd" {
+  type = string
+}

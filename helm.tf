@@ -53,7 +53,10 @@ resource "helm_release" "helm_argocd" {
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
   namespace  = "herramientas"
-  values     = ["${file("values.yaml")}"]
+  values = [templatefile("templates/argocd.yaml.tpl", {
+    SSH_Argocd = split("\n", var.SSH_Argocd )
+  })]
+  #values     = ["${file("values.yaml")}"]
   depends_on = [
     kubernetes_namespace.herramientas,
     google_container_node_pool.primary_nodes
@@ -80,7 +83,8 @@ resource "helm_release" "helm_ingress_controler_herramientas" {
   }
   depends_on = [
     kubernetes_namespace.herramientas,
-    google_container_node_pool.primary_nodes
+    google_container_node_pool.primary_nodes,
+    helm_release.helm_argocd
   ]
 }
 
