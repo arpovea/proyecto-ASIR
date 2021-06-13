@@ -310,7 +310,9 @@ Además, se configura el tipo de máquina a utilizar para los nodos, en este cas
 
 Una vez desplegado el cluster nos queda configurar el contexto a utilizar por "kubectl" para ello utilizaremos de nuevo "gcloud" para ello:
 
-`gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --zone $(terraform output -raw zone)`
+```
+gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --zone $(terraform output -raw zone)
+```
 
 Con esto queda desplegado el cluster para poder empezar a desplegar y configurar el entorno.
 
@@ -336,6 +338,7 @@ Para realizar estas tareas se han realizado previamente algunas configuraciones 
       ```
       gcloud projects add-iam-policy-binding velvety-outcome-308412 --member=serviceAccount:proyecto-asir@velvety-outcome-308412.iam.gserviceaccount.com --role=roles/container.admin
       ```    
+    
     Para ver mas datos sobre los roles distintos roles del cluster pulso [aquí](https://cloud.google.com/kubernetes-engine/docs/how-to/iam).    
 
 ## Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).
