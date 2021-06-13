@@ -59,6 +59,7 @@ Opciones interesantes de los bloques de Terraform:
 
   - depend_on: Cuando se le quiere indicar a Terraform un orden de creación de los distintos recursos.
 
+
 ## Configuración de "providers" (Google,Kubernetes,Helm).
 
 Como se ha visto en el anterior apartado se necesita iniciar el plugin del proveedor que Terraform utilizará para comunicarse con la nube pública en este caso Google Cloud.
@@ -170,7 +171,6 @@ terraform {
   }
 }
 ```
-
 
 ## Creación de VPC network y subnetwork.
 
