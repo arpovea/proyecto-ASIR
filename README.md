@@ -20,6 +20,8 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - [Proyecto en Google, APIs, credenciales,roles y permisos.](#proyecto-en-google-apis-credencialesroles-y-permisos)
 
+  - [Tratamiento de datos sensibles.](#tratamientos-de-datos-sensibles)
+
   - [Comandos Terraform y gcloud.](#comandos-terraform-y-gcloud)
 
 
@@ -49,7 +51,7 @@ Hay distintos tipos de elementos en Terraform, los que se han utilizado son:
 
     El lenguaje Terraform incluye algunos tipos de bloques para solicitar o publicar valores con nombre.    
   - Variable:    
-     Sirven como parámetros para un bloque de Terraform, por lo que los usuarios pueden personalizar el comportamiento sin editar la fuente.
+    Sirven como parámetros para un bloque de Terraform, por lo que los usuarios pueden personalizar el comportamiento sin editar la fuente.
   - Output:    
     Son valores de retorno de las variables o bloques de Terraform.
 
@@ -221,7 +223,7 @@ Una vez instalado gcloud, se ejecutaran los siguientes comandos:
 `gcloud init` --> El cual solicitará una serie de información como nuestro correo y el proyecto al que hacer objetivo.
 `gcloud applcation-default login` --> Con este comando se inicia sesión con las opciones del comando anterior (abre un navegador), además hace que esta conexión sea la que se selecciona por defecto.
 
-Ahora realizariamos el comando de Terraform para aplicar la configuración del fichero, en [esta](#comandos-terraform) sección comentaremos los comandos más usados. Hablemos de la configuración del fichero "gke.tf"
+Ahora realizariamos el comando de Terraform para aplicar la configuración del fichero, en [esta](#comandos-terraform) se expondran unas lista de comandos de terraform. A continuación se verá la configuración del fichero "gke.tf"
 
 ```
 # GKE cluster, crea el cluster y borra el nodo por defecto.
@@ -355,7 +357,10 @@ resource "helm_release" "helm_argocd" {
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
   namespace  = "herramientas"
-  values     = ["${file("values.yaml")}"]
+  values = [templatefile("templates/argocd.yaml.tpl", {
+    SSH_Argocd = split("\n", var.SSH_Argocd )
+  })]
+  #values     = ["${file("values.yaml")}"]
   depends_on = [
     kubernetes_namespace.herramientas,
     google_container_node_pool.primary_nodes
@@ -363,7 +368,7 @@ resource "helm_release" "helm_argocd" {
 }
 ```
 
-Los parametros indican el repositorio a utilizar, el "chart" de dicho repositorio, el namespace donde se tiene que desplegar y el fichero values.yml donde estan los parametros de configuración, dicho fichero esta configurado de tal manera que agrega un repositorio privado y despliega una aplicación demo tipo microservicio.
+Los parámetros indican el repositorio a utilizar, el "chart" de dicho repositorio, el namespace donde se tiene que desplegar y el fichero "argocd.yaml.tmp" que es un "template" para cifrar los datos sensibles mediante variables, ademas estan los parametros de configuración, dicho fichero esta configurado de tal manera que agrega un repositorio privado y despliega una aplicación demo tipo microservicio.
 
 Una vez se ha desplegado las aplicaciones, se despliega mediante helm dos "ingress controller" tipo "nginx", los cuales mediantes las reglas del fichero "ingress.tf" exponen nuestras aplicaciones al exterior, utilizando las IPs que se han reservado:
 
@@ -416,8 +421,9 @@ resource "helm_release" "helm_ingress_controler_sock-shop" {
     kubernetes_namespace.sock_shop
   ]
 }
+```
 
-Las opciones mas relevante es la de "scope", ya que gracias a esta opción cada controlador sirve en el namespace seleccionado, separando asi el tráfico, el de las herramientas y el de la aplicación.
+La opción mas relevante es la de "scope", ya que gracias a esta opción cada controlador es capaz de escuchar solamente en el namespace seleccionado,al desplegarce con helm, consiguiendo asi que el trafico para las herramientas de SI como la de ArgoCD este separado del otro "ingress controler" de la aplicación de producción.
 
 En el fichero ingress.tf estan las reglas como ya se ha mencionado, se le agrega una anotación para que busquen el controlador tipo nginx:
 
@@ -455,6 +461,44 @@ Para realizar todas las tareas anteriores se han realizado previamente algunas c
       ```    
     
     Para ver mas datos sobre los roles distintos roles del cluster pulso [aquí](https://cloud.google.com/kubernetes-engine/docs/how-to/iam).    
+
+
+## Tratamiento de datos sensibles.
+
+En esta sección hablaremos de la herramienta git-crypt la cual se ha utilizado para el manejo de variables/claves sensibles. 
+
+Los datos sensibles son el ID del proyecto y la clave SSH utilizada para la conexión con el repositorio de la aplicación, esta herramienta nos permite encriptar mediante clave GPG los ficheros seleccionados en ".gitattributes" en este caso se han colocado las varibles sensibles en "secrets.auto.tfvars"
+
+A continuación se reproducen los pasos para la instalación y configuración:
+
+  - Instalación
+    En esta caso en Debian:
+
+      `sudo apt update && sudo apt install git-crypt`
+  
+  - Creación de claves GPG personales:
+
+    `gpg --full-generate-key`
+
+  - Configuración de ficheros a cifrar:
+    Se indican en el  ".gitatributes".
+
+  - Comando de Inicio:
+    El siguiente comando inicia "git-crypt" el cual genera unas claves para el repositorio.
+    `git-crypt init` 
+
+  - Agregando las claves personales para poder cifrar/descifrar los ficheros:
+
+    `git-crypt add-gpg-user ID_CLAVE_GPG_PUBLICA`
+
+  - Cifrar y descifrar los ficheros antes de los "commit":
+
+    `git-crypt lock`
+    `git-crypt unlock`
+  
+  - Ver el estado de los ficheros:
+
+    `git-crypt status`
 
 
 ## Comandos Terraform y gcloud.
