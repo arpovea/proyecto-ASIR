@@ -335,7 +335,7 @@ resource "kubernetes_namespace" "herramientas" {
     google_container_node_pool.primary_nodes
   ]
 }
-# Creando namespace para argocd
+# Creando namespace para sock-shop
 resource "kubernetes_namespace" "sock_shop" {
   metadata {
     name = "sock-shop"
@@ -365,6 +365,67 @@ resource "helm_release" "helm_argocd" {
 
 Los parametros indican el repositorio a utilizar, el "chart" de dicho repositorio, el namespace donde se tiene que desplegar y el fichero values.yml donde estan los parametros de configuración, dicho fichero esta configurado de tal manera que agrega un repositorio privado y despliega una aplicación demo tipo microservicio.
 
+Una vez se ha desplegado las aplicaciones, se despliega mediante helm dos "ingress controller" tipo "nginx", los cuales mediantes las reglas del fichero "ingress.tf" exponen nuestras aplicaciones al exterior, utilizando las IPs que se han reservado:
+
+```
+# Desplegando ingress-controler con helm para el namespace de las herramientas
+resource "helm_release" "helm_ingress_controler_herramientas" {
+  name       = "ingresscontr-herram"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx"
+  namespace  = "herramientas"
+  set {
+    name  = "controller.service.loadBalancerIP"
+    value = google_compute_address.ipv4_2.address
+  }
+  set {
+    name  = "controller.scope.enabled"
+    value = true
+  }
+  set {
+    name  = "controller.scope.namespace"
+    value = "herramientas"
+  }
+  depends_on = [
+    kubernetes_namespace.herramientas,
+    google_container_node_pool.primary_nodes,
+    helm_release.helm_argocd
+  ]
+}
+
+# Desplegando ingress-controler con helm para el namespace de las apps
+resource "helm_release" "helm_ingress_controler_sock-shop" {
+  name       = "ingresscontr-calcet"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx"
+  namespace  = "sock-shop"
+  set {
+    name  = "controller.service.loadBalancerIP"
+    value = google_compute_address.ipv4_1.address
+  }
+  set {
+    name  = "controller.scope.enabled"
+    value = true
+  }
+  set {
+    name  = "controller.scope.namespace"
+    value = "sock-shop"
+  }
+  depends_on = [
+    helm_release.helm_argocd,
+    kubernetes_namespace.sock_shop
+  ]
+}
+
+Las opciones mas relevante es la de "scope", ya que gracias a esta opción cada controlador sirve en el namespace seleccionado, separando asi el tráfico, el de las herramientas y el de la aplicación.
+
+En el fichero ingress.tf estan las reglas como ya se ha mencionado, se le agrega una anotación para que busquen el controlador tipo nginx:
+
+```
+annotations = {
+  "kubernetes.io/ingress.class" = "nginx"
+}
+```
 
 ## Proyecto en Google, APIs, credenciales,roles y permisos.
 

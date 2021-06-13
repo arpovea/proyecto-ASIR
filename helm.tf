@@ -37,7 +37,7 @@ resource "kubernetes_namespace" "herramientas" {
     google_container_node_pool.primary_nodes
   ]
 }
-# Creando namespace para argocd
+# Creando namespace para sock-shop
 resource "kubernetes_namespace" "sock_shop" {
   metadata {
     name = "sock-shop"
@@ -63,7 +63,7 @@ resource "helm_release" "helm_argocd" {
   ]
 }
 
-# Desplegando ingress-controler con helm para las herramientas
+# Desplegando ingress-controler con helm para el namespace de las herramientas
 resource "helm_release" "helm_ingress_controler_herramientas" {
   name       = "ingresscontr-herram"
   repository = "https://kubernetes.github.io/ingress-nginx"
@@ -88,7 +88,7 @@ resource "helm_release" "helm_ingress_controler_herramientas" {
   ]
 }
 
-# Desplegando ingress-controler con helm para las apps
+# Desplegando ingress-controler con helm para el namespace de las apps
 resource "helm_release" "helm_ingress_controler_sock-shop" {
   name       = "ingresscontr-calcet"
   repository = "https://kubernetes.github.io/ingress-nginx"
