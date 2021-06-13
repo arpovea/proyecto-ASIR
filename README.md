@@ -16,8 +16,6 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - [Despligue de GKE.](#despligue-de-gke)
 
-  - [Permisos de usuario.](#permisos-de-usuario)
-
   - [Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).](#despligue-de-recursos-y-aplicaciones-mediante-helm-argocd-ingresscontroller)
 
 
@@ -317,7 +315,17 @@ Una vez desplegado el cluster nos queda configurar el contexto a utilizar por "k
 Con esto queda desplegado el cluster para poder empezar a desplegar y configurar el entorno.
 
 ## Proyecto en Google, credenciales de Google, permisos, habilitación de APIS
-## Permisos de usuario.
+
+Para realizar estas tareas se han realizado previamente algunas configuraciones en la plataforma web de google:
+  - Creación de proyecto:
+    Previamente se ha creado el proyecto vía web, es mas sencillo sobre todo cuando es con la cuenta gratuita, ya que piden datos bancarios y demas para la creacion de un nuevo proyecto.
+  - Permisos de Proyecto:
+    A continuación se añade una captura con los permisos existentes en nuestro proyecto:
+      ![Permisos-Proyecto](/doc/imag/permisos-proyecto.png)
+  - Habilitar APIs:
+    Las APIs necesarias para la creación de todos los recursos que se han mencionado anteriormente son:
+      - 
+  - Credenciales y permisos de usuario
 ## Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).
 
 Una vez que se han establecidos los permisos necesarios, vamos a desplegar en primer lugar nuestro software en este caso ArgoCD una herramienta de GitOps para ello se utilizan los siguiente bloques de terraform que estan en el fichero "helm.tf"
