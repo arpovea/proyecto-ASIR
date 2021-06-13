@@ -381,3 +381,6 @@ resource "helm_release" "helm_argocd" {
 Los parametros indican el repositorio a utilizar, el "chart" de dicho repositorio, el namespace donde se tiene que desplegar y el fichero values.yml donde estan los parametros de configuración, dicho fichero esta configurado de tal manera que agrega un repositorio privado y despliega una aplicación demo tipo microservicio.
 
 ## Comandos Terraform y gcloud.
+
+Lista de parametros para terraform [aquí].(https://bit.ly/3vkZIq0)
+Lista de parametros para gcloud [aquí](https://cloud.google.com/sdk/gcloud/reference)
