@@ -333,7 +333,9 @@ Para realizar estas tareas se han realizado previamente algunas configuraciones 
     Como se puede obsevar en las imagenes anteriores lo usuarios pertenecientes a un proyecto tiene distintos roles que le concede permisos sobre los distintos componentes de la nube, desde editor del proyecto, hasta administrador de GKE, entre miles de cosas, dependiendo de lo que se quiera realizar con la cuenta de servicio, en las siguiente imagenes se verá los permisos que tiene el la cuenta de servicio de nuestro proyecto, y una muestra de como se puede agregar los permisos via web y un comando de ejemplo para hacerlo via CLI:    
       ![permisos-proyecto](/doc/imag/permisos-proyecto.png)    
       ![agregando-permisos-proyecto](/doc/imag/agregando-permisos-proyecto.png)    
-      `gcloud projects add-iam-policy-binding velvety-outcome-308412 --member=serviceAccount:proyecto-asir@velvety-outcome-308412.iam.gserviceaccount.com --role=roles/container.admin`    
+      ```
+      gcloud projects add-iam-policy-binding velvety-outcome-308412 --member=serviceAccount:proyecto-asir@velvety-outcome-308412.iam.gserviceaccount.com --role=roles/container.admin
+      ```    
     Para ver mas datos sobre los roles distintos roles del cluster pulso [aquí](https://cloud.google.com/kubernetes-engine/docs/how-to/iam).    
 
 ## Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).
