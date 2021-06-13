@@ -18,7 +18,11 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - [Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).](#despligue-de-recursos-y-aplicaciones-mediante-helm-argocd-ingresscontroller)
 
+  - [Proyecto en Google, APIs, credenciales,roles y permisos.](#proyecto-en-google-apis-credencialesroles-y-permisos)
 
+  - [Comandos Terraform y gcloud.](#comandos-terraform-y-gcloud)
+
+  
 ## Descripción de los distintos elementos de Terraform.
 
 Descripción de un bloque en Terraform:
@@ -123,7 +127,7 @@ provider "helm" {
 Como anteriormente se hace uso de un tipo "data" para obtener algunos de los valores para la configuración de este bloque de provider además de otras variables para obtener los certificados y endpoint del cluster.
 
 
-## Creación de estado remoto de terraform
+## Creación de estado remoto de terraform.
 
 De forma predeterminada, Terraform almacena el estado localmente en un archivo llamado "terraform.tfstate". Cuando se trabaja con Terraform en equipo, el uso de un archivo local complica el uso de Terraform porque cada usuario debe asegurarse de tener siempre los datos de estado más recientes antes de ejecutar Terraform y asegurarse de que nadie más ejecute Terraform al mismo tiempo. Por ello se escriben los datos del estado en un almacén de datos remoto, que luego se puede compartir entre todos los miembros de un equipo.
 
@@ -362,7 +366,7 @@ resource "helm_release" "helm_argocd" {
 Los parametros indican el repositorio a utilizar, el "chart" de dicho repositorio, el namespace donde se tiene que desplegar y el fichero values.yml donde estan los parametros de configuración, dicho fichero esta configurado de tal manera que agrega un repositorio privado y despliega una aplicación demo tipo microservicio.
 
 
-## Proyecto en Google, APIs, credenciales,roles y permisos
+## Proyecto en Google, APIs, credenciales,roles y permisos.
 
 Para realizar todas las tareas anteriores se han realizado previamente algunas configuraciones en la plataforma web de google, o por CLI:
 
@@ -390,5 +394,5 @@ Para realizar todas las tareas anteriores se han realizado previamente algunas c
 
 ## Comandos Terraform y gcloud.
 
-Lista de parametros para terraform [aquí].(https://bit.ly/3vkZIq0)    
-Lista de parametros para gcloud [aquí](https://cloud.google.com/sdk/gcloud/reference)    
+Lista de parametros para terraform [aquí](https://bit.ly/3vkZIq0).    
+Lista de parametros para gcloud [aquí](https://cloud.google.com/sdk/gcloud/reference).    
