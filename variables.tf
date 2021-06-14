@@ -33,3 +33,7 @@ variable "gke_password" {
 variable "SSH_Argocd" {
   type = string
 }
+
+variable "pepe" {
+  type = string
+}
