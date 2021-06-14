@@ -1,6 +1,6 @@
-# Use this datasource to access the Terraform account's email for Kubernetes permissions.
+# Data para acceder a la información del usuario de terraform
 data "google_client_openid_userinfo" "terraform_user" {}
-
+# Permisos para poder crear y desplegar recursos en el cluster.
 resource "kubernetes_cluster_role_binding" "user" {
   metadata {
     name = "admin-user"
@@ -56,7 +56,7 @@ resource "helm_release" "helm_argocd" {
   values = [templatefile("templates/argocd.yaml.tpl", {
     SSH_Argocd = split("\n", var.SSH_Argocd)
   })]
-  #values     = ["${file("values.yaml")}"]
+  #values     = ["${file("values.yaml")}"] --> Ejemplo de uso para pasar el fichero values.yaml
   depends_on = [
     kubernetes_namespace.herramientas,
     google_container_node_pool.primary_nodes

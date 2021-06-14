@@ -1,4 +1,4 @@
-#Bucket para el estado remoto de terraform
+#Despligue de Bucket para el estado remoto de terraform
 resource "google_storage_bucket" "terraform_bucket" {
   name          = "terraform-bucket-proyecto-asir"
   location      = var.region

@@ -1,3 +1,4 @@
+# Definicion del ingress para calcetines
 resource "kubernetes_ingress" "ingress-calcetines" {
   metadata {
     name      = "ingress-calcetines"
@@ -28,6 +29,7 @@ resource "kubernetes_ingress" "ingress-calcetines" {
   ]
 }
 
+# Definicion del ingress para argocd
 resource "kubernetes_ingress" "ingress-argocd" {
   metadata {
     name      = "ingress-argocd"
