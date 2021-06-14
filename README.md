@@ -580,7 +580,7 @@ A continuación se reproducen los pasos para la instalación y configuración:
 
   - Cifrar y descifrar los ficheros antes de los "commit":    
 
-    `git-crypt lock`
+    `git-crypt lock`    
     `git-crypt unlock`
   
   - Ver el estado de los ficheros:    
