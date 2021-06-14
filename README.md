@@ -569,9 +569,9 @@ A continuación se reproducen los pasos para la instalación y configuración:
   - Configuración de ficheros a cifrar:
     Se indican en el  ".gitatributes".
 
-  - Comando de Inicio:
-    El siguiente comando inicia "git-crypt" el cual genera unas claves para el repositorio.
-    
+  - Comando de Inicio:    
+    El siguiente comando inicia "git-crypt"
+
     `git-crypt init` 
 
   - Agregando las claves personales para poder cifrar/descifrar los ficheros:
