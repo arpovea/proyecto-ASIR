@@ -8,8 +8,6 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - [Configuración de los "providers" (Google, Kubernetes, Helm).](#configuración-de-los-providers-google-kubernetes-helm)
 
-  Configuración de los "providers" (Google, Kubernetes, Helm).
-
   - [Creación de estado remoto de Terraform.](#creación-de-estado-remoto-de-terraform)
 
   - [Creación de VPC network y subnetwork.](#creación-de-vpc-network-y-subnetwork)
