@@ -54,7 +54,7 @@ resource "helm_release" "helm_argocd" {
   chart      = "argo-cd"
   namespace  = "herramientas"
   values = [templatefile("templates/argocd.yaml.tpl", {
-    SSH_Argocd = split("\n", var.SSH_Argocd )
+    SSH_Argocd = split("\n", var.SSH_Argocd)
   })]
   #values     = ["${file("values.yaml")}"]
   depends_on = [
