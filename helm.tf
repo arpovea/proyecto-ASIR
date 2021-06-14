@@ -4,7 +4,8 @@ resource "kubernetes_namespace" "herramientas" {
     name = "herramientas"
   }
   depends_on = [
-    google_container_node_pool.primary_nodes
+    google_container_node_pool.primary_nodes,
+    kubernetes_cluster_role_binding.user
   ]
 }
 # Creando namespace para sock-shop
@@ -13,7 +14,8 @@ resource "kubernetes_namespace" "sock_shop" {
     name = "sock-shop"
   }
   depends_on = [
-    google_container_node_pool.primary_nodes
+    google_container_node_pool.primary_nodes,
+    kubernetes_cluster_role_binding.user
   ]
 }
 

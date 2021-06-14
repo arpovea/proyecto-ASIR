@@ -6,7 +6,9 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - [Descripción de los distintos elementos de Terraform.](#descripción-de-los-distintos-elementos-de-terraform)
 
-  - [Configuración de los "providers" (Google,Kubernetes,Helm).](#configuración-de-los-providers-google-kubernetes-helm)
+  - [Configuración de los "providers" (Google, Kubernetes, Helm).](#configuración-de-los-providers-google-kubernetes-helm)
+
+  Configuración de los "providers" (Google, Kubernetes, Helm).
 
   - [Creación de estado remoto de Terraform.](#creación-de-estado-remoto-de-terraform)
 
