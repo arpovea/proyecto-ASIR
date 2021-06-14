@@ -18,6 +18,8 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - [Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).](#despligue-de-recursos-y-aplicaciones-mediante-helm-argocd-ingresscontroller)
 
+  - [Despliegue y configuración zona DNS.](#despligue-y-configuracion-zona-dns)
+
   - [Proyecto en Google, APIs, credenciales,roles y permisos.](#proyecto-en-google-apis-credencialesroles-y-permisos)
 
   - [Tratamiento de datos sensibles.](#tratamientos-de-datos-sensibles)
@@ -432,6 +434,90 @@ annotations = {
   "kubernetes.io/ingress.class" = "nginx"
 }
 ```
+## Despliegue y configuración zona DNS.
+
+Antes de configurar la zona DNS se ha adquirido un dominio en "Google Domains", en el fichero dns.tf se realiza esta creación de zona y se agregan los registros:
+
+```
+# Creando la zona dns
+resource "google_dns_managed_zone" "parent_zone" {
+  #  provider = "google-beta"
+  name        = "zone-arp"
+  dns_name    = "arp-proyecto-asir.com."
+  description = "Zona DNS del proyecto asir"
+}
+```
+
+Al crear la zona en "dns_name" se agrega el dominio.
+
+Luego en los siguientes bloques se crean los siguientes registros, tipo "A" y tipo "CNAME":
+
+```
+#Añadiendo el registro "A" de app a la zona dns
+resource "google_dns_record_set" "app_dns" {
+  #  provider = "google-beta"
+  managed_zone = google_dns_managed_zone.parent_zone.name
+  name         = "app.arp-proyecto-asir.com."
+  type         = "A"
+  rrdatas      = [google_compute_address.ipv4_1.address]
+  ttl          = 86400
+  depends_on = [
+    helm_release.helm_ingress_controler_sock-shop
+  ]
+}
+
+#Añadiendo el registro "A" de tools a la zona dns 
+resource "google_dns_record_set" "tools_dns" {
+  #  provider = "google-beta"
+  managed_zone = google_dns_managed_zone.parent_zone.name
+  name         = "tools.arp-proyecto-asir.com."
+  type         = "A"
+  rrdatas      = [google_compute_address.ipv4_2.address]
+  ttl          = 86400
+  depends_on = [
+    helm_release.helm_ingress_controler_herramientas
+  ]
+}
+
+#Añadiendo el registro "CNAME" de calcetines a la zona dns 
+resource "google_dns_record_set" "calcetines_dns" {
+  #  provider = "google-beta"
+  managed_zone = google_dns_managed_zone.parent_zone.name
+  name         = "calcetines.arp-proyecto-asir.com."
+  type         = "CNAME"
+  rrdatas      = ["app.arp-proyecto-asir.com."]
+  ttl          = 86400
+  depends_on = [
+    helm_release.helm_ingress_controler_sock-shop
+  ]
+}
+
+#Añadiendo el registro "CNAME" de argocd a la zona dns 
+resource "google_dns_record_set" "argocd_dns" {
+  #  provider = "google-beta"
+  managed_zone = google_dns_managed_zone.parent_zone.name
+  name         = "argocd.arp-proyecto-asir.com."
+  type         = "CNAME"
+  rrdatas      = ["tools.arp-proyecto-asir.com."]
+  ttl          = 86400
+  depends_on = [
+    helm_release.helm_ingress_controler_herramientas
+  ]
+}
+
+#Añadiendo el registro "CNAME" de grafana a la zona dns 
+resource "google_dns_record_set" "grafana_dns" {
+  #  provider = "google-beta"
+  managed_zone = google_dns_managed_zone.parent_zone.name
+  name         = "grafana.arp-proyecto-asir.com."
+  type         = "CNAME"
+  rrdatas      = ["tools.arp-proyecto-asir.com."]
+  ttl          = 86400
+  depends_on = [
+    helm_release.helm_ingress_controler_herramientas
+  ]
+}
+```
 
 ## Proyecto en Google, APIs, credenciales,roles y permisos.
 
@@ -474,7 +560,7 @@ A continuación se reproducen los pasos para la instalación y configuración:
   - Instalación
     En esta caso en Debian:
 
-      `sudo apt update && sudo apt install git-crypt`
+    `sudo apt update && sudo apt install git-crypt`
   
   - Creación de claves GPG personales:
 
