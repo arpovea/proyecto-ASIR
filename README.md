@@ -18,11 +18,11 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - [Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).](#despligue-de-recursos-y-aplicaciones-mediante-helm-argocd-ingresscontroller)
 
-  - [Despliegue y configuración zona DNS.](#despligue-y-configuracion-zona-dns)
+  - [Despliegue y configuración zona DNS.](#despliegue-y-configuración-zona-dns)
 
   - [Proyecto en Google, APIs, credenciales,roles y permisos.](#proyecto-en-google-apis-credencialesroles-y-permisos)
 
-  - [Tratamiento de datos sensibles.](#tratamientos-de-datos-sensibles)
+  - [Tratamiento de datos sensibles.](#tratamiento-de-datos-sensibles)
 
   - [Comandos Terraform y gcloud.](#comandos-terraform-y-gcloud)
 
@@ -372,7 +372,7 @@ resource "helm_release" "helm_argocd" {
 
 Los parámetros indican el repositorio a utilizar, el "chart" de dicho repositorio, el namespace donde se tiene que desplegar y el fichero "argocd.yaml.tmp" que es un "template" para cifrar los datos sensibles mediante variables, ademas estan los parametros de configuración, dicho fichero esta configurado de tal manera que agrega un repositorio privado y despliega una aplicación demo tipo microservicio.
 
-Una vez se ha desplegado las aplicaciones, se despliega mediante helm dos "ingress controller" tipo "nginx", los cuales mediantes las reglas del fichero "ingress.tf" exponen nuestras aplicaciones al exterior, utilizando las IPs que se han reservado:
+Una vez se han desplegado las aplicaciones, se despliega mediante helm dos "ingress controller" tipo "nginx", los cuales mediantes las reglas del fichero "ingress.tf" exponen nuestras aplicaciones al exterior, utilizando las IPs que se han reservado:
 
 ```
 # Desplegando ingress-controler con helm para el namespace de las herramientas
