@@ -571,6 +571,7 @@ A continuación se reproducen los pasos para la instalación y configuración:
 
   - Comando de Inicio:
     El siguiente comando inicia "git-crypt" el cual genera unas claves para el repositorio.
+    
     `git-crypt init` 
 
   - Agregando las claves personales para poder cifrar/descifrar los ficheros:
