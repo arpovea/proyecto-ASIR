@@ -6,7 +6,7 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - [Descripción de los distintos elementos de Terraform.](#descripción-de-los-distintos-elementos-de-terraform)
 
-  - [Configuración de "providers" (Google,Kubernetes,Helm).](#configuración-de-providers-googlekuberneteshelm)
+  - [Configuración de los "providers" (Google,Kubernetes,Helm).](#configuración-de-los-providers-google-kubernetes-helm)
 
   - [Creación de estado remoto de Terraform.](#creación-de-estado-remoto-de-terraform)
 
@@ -16,11 +16,11 @@ En este proyecto se pueden encontrar los siguientes contenidos realizados con Te
 
   - [Despligue de GKE.](#despligue-de-gke)
 
-  - [Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).](#despligue-de-recursos-y-aplicaciones-mediante-helm-argocd-ingresscontroller)
+  - [Despligue de recursos y aplicaciones mediante Helm (ArgoCD, Ingress Controller).](#despligue-de-recursos-y-aplicaciones-mediante-helm-argocd-ingress-controller)
 
   - [Despliegue y configuración zona DNS.](#despliegue-y-configuración-zona-dns)
 
-  - [Proyecto en Google, APIs, credenciales,roles y permisos.](#proyecto-en-google-apis-credencialesroles-y-permisos)
+  - [Proyecto en Google, APIs, credenciales, roles y permisos.](#proyecto-en-google-apis-credenciales-roles-y-permisos)
 
   - [Tratamiento de datos sensibles.](#tratamiento-de-datos-sensibles)
 
@@ -59,10 +59,10 @@ Hay distintos tipos de elementos en Terraform, los que se han utilizado son:
 
 Opción interesante de los bloques de Terraform:
 
-  - depend_on: Cuando se le quiere indicar a Terraform un orden de creación de los distintos recursos.
+  - depend_on: Cuando se le quiere indicar a Terraform una orden de creación de los distintos recursos.
 
 
-## Configuración de "providers" (Google,Kubernetes,Helm).
+## Configuración de "providers" (Google, Kubernetes, Helm).
 
 Como se ha visto en el anterior apartado se necesita iniciar el plugin del proveedor que Terraform utilizará para comunicarse con la nube pública en este caso Google Cloud.
 
@@ -90,14 +90,14 @@ provider "google" {
 }
 ```
 
-Como podemos ver primero se carga el plugin a utilizar por terraform de google y mediante unas credenciales (token) y parámetros se le hace objetivo a un proyecto.
+Como podemos ver primero se carga el plugin a utilizar por Terraform de Google y mediante unas credenciales (token) y parámetros se le hace objetivo a un proyecto.
 
-A continuación se utiliza el provider de Kuberentes:
+A continuación, se utiliza el provider de Kuberentes:
 
-El proveedor de Kubernetes (K8S) se utiliza para interactuar con los recursos admitidos por Kubernetes. El proveedor debe configurarse con las credenciales adecuadas antes de que se pueda utilizar. Además de la autenticacíon de la cuenta, se necesita que el cluster este previamente creado, en este caso se utiliza GKE que se comentará más adelante.
+El proveedor de Kubernetes (K8S) se utiliza para interactuar con los recursos admitidos por Kubernetes. El proveedor debe configurarse con las credenciales adecuadas antes de que se pueda utilizar. Además de la autenticacíon de la cuenta, se necesita que el cluster esté previamente creado, en este caso se utiliza GKE que se comentará más adelante.
 
 ```
-# Obtener datos de la cuenta para utilizarlos. en este caso para el token de autenticación.
+# Obtener datos de la cuenta para utilizarlos. En este caso para el token de autenticación.
 data "google_client_config" "current" {
 }
 #Configuración para poder crear recursos en kubernetes, se utiliza un provider. (Se utiliza el data anterior)
@@ -134,7 +134,7 @@ Como anteriormente se hace uso de un tipo "data" para obtener algunos de los val
 
 ## Creación de estado remoto de terraform.
 
-De forma predeterminada, Terraform almacena el estado localmente en un archivo llamado "terraform.tfstate". Cuando se trabaja con Terraform en equipo, el uso de un archivo local complica el uso de Terraform porque cada usuario debe asegurarse de tener siempre los datos de estado más recientes antes de ejecutar Terraform y asegurarse de que nadie más ejecute Terraform al mismo tiempo. Por ello se escriben los datos del estado en un almacén de datos remoto, que luego se puede compartir entre todos los miembros de un equipo.
+De forma predeterminada, Terraform almacena el estado localmente en un archivo llamado "terraform.tfstate". Cuando se trabaja con Terraform en equipo, el uso de un archivo local complica el uso de Terraform porque cada usuario debe asegurarse de tener siempre los datos de estado más recientes antes de ejecutar Terraform y asegurarse de que nadie más ejecute Terraform al mismo tiempo. Por ello, se escriben los datos del estado en un almacén de datos remoto, que luego se puede compartir entre todos los miembros de un equipo.
 
 Terraform admite el almacenamiento de este estado en Google Cloud Storage además de otras opciones, por lo que primero se realiza la creación de este recurso en el fichero "storages.tf"
 
@@ -159,7 +159,7 @@ resource "google_storage_bucket" "terraform_bucket" {
 }
 ```
 
-En este bloque de Terraform se configura el almacenamiento tipo "bucket" el cual le añadimos unas opciones, como el versionado y que se vaya borrando cuando haya 5 nuevas versiones de lo almacenado.
+Con este bloque de Terraform se crea el almacenamiento tipo "bucket" el cual le añadimos unas opciones, como el versionado y que se vaya borrando cuando haya 5 nuevas versiones de los ficheros almacenado.
 
 El estado remoto se implementa mediante un backend, que se puede configurar en el módulo raíz de su configuración, en este caso se ha configurado en el fichero "provider.tf":
 
@@ -176,7 +176,7 @@ terraform {
 
 ## Creación de VPC network y subnetwork.
 
-Ahora se creará una Virtual Private Cloud network para utilizar en nuestro proyecto, así como una subnetwork que utilizará nuestro cluster GKE, en este caso el fichero utilizado es "networking.tf"
+Ahora se creará una Virtual Private Cloud network para utilizar en nuestro proyecto, así como una subnetwork que también utilizará nuestro cluster GKE, en este caso el fichero utilizado es "networking.tf"
 
 ```
 # VPC
@@ -197,7 +197,7 @@ Esto crea por defecto una red VPC en cada región, y luego en la región que hem
 
 ## Reserva de IPs.
 
-Para exporner las aplicaciones al exterior mediante los "ingress controller" necesitamos reservar dos IPs para ello se utiliza el fichero "ips.tf"
+Para exporner las aplicaciones al exterior mediante los "ingress controller" necesitamos reservar dos IPs, para ello se utiliza el fichero "ips.tf"
 
 ```
 #IP fijas para los ingress
@@ -209,23 +209,23 @@ resource "google_compute_address" "ipv4_2" {
   name = "ipv4-address2"
 }
 ```
-Estas IPs son asignadas por el proveedor, se puede averiguar cuales ha asignado mediante los outputs que comentaremos más adelante.
+Estas IPs son asignadas por el proveedor, se puede averiguar cuáles son con los elementos "outputs" que se comentaron anteriormente.
 
 
 ## Despligue de GKE.
 
-Una vez tenemos configurado el plugin del proveedor de google y las credenciales al proyecto, es hora de crear nuestro cluster utilizando el servicio de google llamado GKE (Google Kubernetes Engine) se utiliza el fichero "gke.tf"
+Una vez tenemos configurado el plugin del proveedor de Google y las credenciales al proyecto, es hora de crear el cluster utilizando el servicio de Google llamado GKE (Google Kubernetes Engine) se utiliza el fichero "gke.tf"
 
-Se despliega un cluster zonal, esto quiere decir, que se despliga el cluster en una zona especifica de la región, ya que si esto no se especifica se crearía un cluster regional y duplicaría los nodos por cada zona de la región, lo cual no es el propósito de este proyecto.
+Se despliega un cluster zonal, esto quiere decir, que se lanza el cluster en una zona específica de la región, ya que si esto no se especifica se crearía un cluster regional y duplicaría los nodos por cada zona de la región, lo cual no es el propósito de este proyecto.
 
-Además, se necesita tener el binario de "gcloud", ya que nos hará falta para la configuración del contexto en el fichero .kube además nos valdrá para otras gestiones mediante la consola como cambiar permisos a usuario del proyecto.
+Además, se necesita tener el binario de "gcloud", ya que nos hará falta para la configuración del contexto en el fichero ".kube" además nos valdrá para otras gestiones mediante la consola como cambiar permisos a cuentas de servicios del proyecto.
 
-Una vez instalado gcloud, se ejecutaran los siguientes comandos:
+Una vez instalado gcloud, se ejecutarán los siguientes comandos:
 
 `gcloud init` --> El cual solicitará una serie de información como nuestro correo y el proyecto al que hacer objetivo.
-`gcloud applcation-default login` --> Con este comando se inicia sesión con las opciones del comando anterior (abre un navegador), además hace que esta conexión sea la que se selecciona por defecto.
+`gcloud application-default login` --> Con este comando se inicia sesión con las opciones del comando anterior (abre un navegador), además hace que esta conexión sea la que se selecciona por defecto.
 
-Ahora realizariamos el comando de Terraform para aplicar la configuración del fichero, en [esta](#comandos-terraform) se expondran unas lista de comandos de terraform. A continuación se verá la configuración del fichero "gke.tf"
+Ahora se realizará el comando de Terraform para aplicar la configuración del fichero, en [este](#comandos-terraform-y-gcloud) apartado se expondrán una lista de comandos de Terraform. A continuación, se verá la configuración del fichero "gke.tf"
 
 ```
 # GKE cluster, crea el cluster y borra el nodo por defecto.
@@ -264,12 +264,12 @@ resource "google_container_cluster" "primary" {
 }
 ```
 
-Lo primero que se realiza es crear el cluster, el cual por defecto al iniciarse crea un nodo, el cual es recomendable dejar que cree (para su completo despligue) y luego lo borre, se añaden parámetros para su configuración como son:
+Lo primero que se realiza es crear el cluster (nodo master), el cual por defecto al iniciarse crea un nodo (worker), el cual es recomendable dejar que cree (para su completo despligue) y luego lo borre, se añaden parámetros para su configuración como son:
   
   - http_load_balancing --> Balancedor por defecto del cluster
   - horizontal_pod_autoscaling --> Auto escalado horizontal de los pods
 
-Una vez el cluster esta desplegado, no tiene ningún nodo "worker" por lo que se añadirán y configurarán con el siguiente bloque de terraform:
+Una vez el cluster esta desplegado, no tiene ningún nodo "worker" por lo que se añadirán y configurarán con el siguiente bloque de Terraform:
 
 ```
 # Creamos los nodos después de desplegar el cluster en este caso 2.
@@ -316,7 +316,7 @@ Esto configura el grupo de nodos trabajadores, los cuales como se pueden ver en 
 
 Además, se configura el tipo de máquina a utilizar para los nodos, en este caso el tipo "e2-medium" que consta de 1 VCPU y 4GB de RAM también nos permite realizar el autoescalado, otro tipo de máquinas no lo permite como las de la serie N1.
 
-Una vez desplegado el cluster nos queda configurar el contexto a utilizar por "kubectl" para ello utilizaremos de nuevo "gcloud" para ello:
+Una vez desplegado el cluster nos queda configurar el contexto a utilizar por "kubectl" para ello utilizaremos de nuevo "gcloud":
 
 ```
 gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --zone $(terraform output -raw zone)
@@ -325,9 +325,9 @@ gcloud container clusters get-credentials $(terraform output -raw kubernetes_clu
 Con esto queda desplegado el cluster para poder empezar a desplegar y configurar el entorno.
 
 
-## Despligue de recursos y aplicaciones mediante Helm (ArgoCD, IngressController).
+## Despligue de recursos y aplicaciones mediante Helm (ArgoCD, Ingress Controller).
 
-Una vez que se han establecidos los permisos necesarios, vamos a desplegar en primer lugar nuestro software en este caso ArgoCD una herramienta de GitOps para ello se utilizan los siguiente bloques de terraform que estan en el fichero "helm.tf"
+Una vez que se han establecido los permisos necesarios (vea sección de permisos [aquí](#proyecto-en-google-apis-credenciales-roles-y-permisos)), vamos a desplegar en primer lugar nuestro software, en este caso ArgoCD, una herramienta de GitOps, para ello, se utilizan los siguiente bloques de Terraform que están en el fichero "helm.tf"
 
 ```
 # Creando namespace para argocd utlizando "kubernetes"
@@ -350,7 +350,7 @@ resource "kubernetes_namespace" "sock_shop" {
 }
 ```
 
-En primer lugar se utiliza un bloque de terraform que crea un par de namespaces utilizando "kubernetes" (previamente lo agregamos a los providers), luego con el siguiente se despliega ArgoCD
+En primer lugar, se utiliza un bloque de Terraform que crea un par de namespaces utilizando "kubernetes" (previamente se agregó a los providers), luego con el siguiente se despliega ArgoCD
 
 ```
 # Desplegando argocd con helm
@@ -370,7 +370,7 @@ resource "helm_release" "helm_argocd" {
 }
 ```
 
-Los parámetros indican el repositorio a utilizar, el "chart" de dicho repositorio, el namespace donde se tiene que desplegar y el fichero "argocd.yaml.tmp" que es un "template" para cifrar los datos sensibles mediante variables, ademas estan los parametros de configuración, dicho fichero esta configurado de tal manera que agrega un repositorio privado y despliega una aplicación demo tipo microservicio.
+Los parámetros indican el repositorio a utilizar, el "chart" de dicho repositorio, el namespace donde se tiene que desplegar y el fichero "argocd.yaml.tmp" que es un "template" para cifrar los datos sensibles mediante variables, además están los parámetros de configuración, dicho fichero está configurado de tal manera que agrega un repositorio privado y despliega una aplicación "demo" tipo microservicio.
 
 Una vez se han desplegado las aplicaciones, se despliega mediante helm dos "ingress controller" tipo "nginx", los cuales mediantes las reglas del fichero "ingress.tf" exponen nuestras aplicaciones al exterior, utilizando las IPs que se han reservado:
 
@@ -425,18 +425,20 @@ resource "helm_release" "helm_ingress_controler_sock-shop" {
 }
 ```
 
-La opción mas relevante es la de "scope", ya que gracias a esta opción cada controlador es capaz de escuchar solamente en el namespace seleccionado,al desplegarce con helm, consiguiendo asi que el trafico para las herramientas de SI como la de ArgoCD este separado del otro "ingress controler" de la aplicación de producción.
+La opción mas relevante es la de "scope", ya que gracias a esta opción cada controlador es capaz de escuchar solamente en el namespace seleccionado, al desplegarse con helm, consiguiendo así que el tráfico para las herramientas de "sistemas" como la de ArgoCD, esté separado del otro "ingress controler" de la aplicación de producción.
 
-En el fichero ingress.tf estan las reglas como ya se ha mencionado, se le agrega una anotación para que busquen el controlador tipo nginx:
+En el fichero ingress.tf están las reglas como ya se ha mencionado, se le agrega una anotación para que busquen el controlador tipo nginx:
 
 ```
 annotations = {
   "kubernetes.io/ingress.class" = "nginx"
 }
 ```
+
+
 ## Despliegue y configuración zona DNS.
 
-Antes de configurar la zona DNS se ha adquirido un dominio en "Google Domains", en el fichero dns.tf se realiza esta creación de zona y se agregan los registros:
+Antes de configurar la zona DNS se ha adquirido un dominio en "Google Domains", en el fichero dns.tf se realiza la creación de zona y se agregan los registros:
 
 ```
 # Creando la zona dns
@@ -519,12 +521,15 @@ resource "google_dns_record_set" "grafana_dns" {
 }
 ```
 
-## Proyecto en Google, APIs, credenciales,roles y permisos.
+Una vez realizado esto solo queda cambiar en la gestión del dominio adquirido los dns que ha proporcionado GCP para la zona que ahora se administra mediante terraform.
+
+
+## Proyecto en Google, APIs, credenciales, roles y permisos.
 
 Para realizar todas las tareas anteriores se han realizado previamente algunas configuraciones en la plataforma web de google, o por CLI:
 
   - Creación de proyecto:    
-    Previamente se ha creado el proyecto vía web, es mas sencillo sobre todo cuando es con la cuenta gratuita, ya que piden datos bancarios y demas para la creacion de un nuevo proyecto.    
+    Previamente se ha creado el proyecto vía web, es más sencillo sobre todo cuando es con la cuenta gratuita, ya que piden datos bancarios y demás para la creación de un nuevo proyecto.    
 
   - Habilitar APIs:    
     En la siguiente imagen se muestran las APIs necesarias para la creación de todos los recursos que se han mencionado anteriormente, algunas activadas por defecto otras hay que habilitarlas manualmente:    
@@ -532,12 +537,12 @@ Para realizar todas las tareas anteriores se han realizado previamente algunas c
       ![APIs](/doc/imag/APIs-enabled.png)    
 
   - Miembros/claves asociadas del Proyecto:    
-    A continuación se añade una captura con las cuentas de servicios existentes en el proyecto, alguna se crea automaticamente al habilitar las APIs:    
+    A continuación, se añade una captura con las cuentas de servicios existentes en el proyecto, alguna se crea automáticamente al habilitar las APIs:    
 
       ![cuentas-servicios-proyecto](/doc/imag/cuentas-servicios-proyecto.png)    
 
   - Credenciales y permisos del usuario del proyecto:    
-    Las cuentas de servicio de un proyecto tiene distintos roles que le concede permisos sobre los distintos componentes de la nube, desde editor del proyecto, hasta administrador de GKE, entre miles de cosas, dependiendo de lo que se quiera realizar con la cuenta de servicio, en las siguiente imagenes se verá los permisos que tiene la cuenta de servicio de nuestro proyecto, y una muestra de como se puede agregar los permisos via web y un comando de ejemplo para hacerlo via CLI:    
+    Las cuentas de servicio de un proyecto tiene distintos roles que le concede permisos sobre los distintos componentes de la nube, desde editor del proyecto hasta administrador de GKE, entre miles de cosas, dependiendo de lo que se quiera realizar con la cuenta de servicio, en las siguientes imágenes se verá los permisos que tiene la cuenta de servicio de nuestro proyecto, y una muestra de como se puede agregar los permisos vía web y un comando de ejemplo para hacerlo vía CLI:    
 
       ![permisos-proyecto](/doc/imag/permisos-proyecto.png)    
 
@@ -545,17 +550,18 @@ Para realizar todas las tareas anteriores se han realizado previamente algunas c
       ```
       gcloud projects add-iam-policy-binding velvety-outcome-308412 --member=serviceAccount:proyecto-asir@velvety-outcome-308412.iam.gserviceaccount.com --role=roles/container.admin
       ```    
-    
-    Para ver mas datos sobre los roles distintos roles del cluster pulso [aquí](https://cloud.google.com/kubernetes-engine/docs/how-to/iam).    
+    Para ver más datos sobre los roles distintos roles del cluster pulsa [aquí](https://cloud.google.com/kubernetes-engine/docs/how-to/iam).    
+
+    Para el despligue y creación de recursos en el cluster, se necesita crear una serie de permisos que esta definido en el fichero "clusterrolebindig.tf" con  el  cual se le da permisos al usuario de terraform, como si fuera administrador.
 
 
 ## Tratamiento de datos sensibles.
 
-En esta sección hablaremos de la herramienta git-crypt la cual se ha utilizado para el manejo de variables/claves sensibles. 
+En esta sección hablaremos de la herramienta "git-crypt" la cual se ha utilizado para el manejo de variables/claves sensibles. 
 
-Los datos sensibles son el ID del proyecto y la clave SSH utilizada para la conexión con el repositorio de la aplicación, esta herramienta nos permite encriptar mediante clave GPG los ficheros seleccionados en ".gitattributes" en este caso se han colocado las varibles sensibles en "secrets.auto.tfvars"
+Los datos sensibles son el ID del proyecto y la clave SSH utilizada para la conexión con el repositorio de la aplicación, esta herramienta nos permite encriptar mediante clave GPG los ficheros seleccionados en ".gitattributes" en este caso se han colocado las varibles sensibles en "secrets.auto.tfvars" el cual esta actualmente cifrado.
 
-A continuación se reproducen los pasos para la instalación y configuración:
+A continuación, se reproducen los pasos para la instalación y configuración:
 
   - Instalación:    
     En esta caso en Debian:
@@ -590,5 +596,5 @@ A continuación se reproducen los pasos para la instalación y configuración:
 
 ## Comandos Terraform y gcloud.
 
-Lista de parametros para terraform [aquí](https://bit.ly/3vkZIq0).    
+Lista de parametros para Terraform [aquí](https://bit.ly/3vkZIq0).    
 Lista de parametros para gcloud [aquí](https://cloud.google.com/sdk/gcloud/reference).    
