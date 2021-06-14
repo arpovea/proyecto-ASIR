@@ -566,24 +566,24 @@ A continuación se reproducen los pasos para la instalación y configuración:
 
     `gpg --full-generate-key`
 
-  - Configuración de ficheros a cifrar:
+  - Configuración de ficheros a cifrar:    
     Se indican en el  ".gitatributes".
 
   - Comando de Inicio:    
-    El siguiente comando inicia "git-crypt"
+    El siguiente comando inicia "git-crypt":
 
     `git-crypt init` 
 
-  - Agregando las claves personales para poder cifrar/descifrar los ficheros:
+  - Agregando las claves personales para poder cifrar/descifrar los ficheros:    
 
     `git-crypt add-gpg-user ID_CLAVE_GPG_PUBLICA`
 
-  - Cifrar y descifrar los ficheros antes de los "commit":
+  - Cifrar y descifrar los ficheros antes de los "commit":    
 
     `git-crypt lock`
     `git-crypt unlock`
   
-  - Ver el estado de los ficheros:
+  - Ver el estado de los ficheros:    
 
     `git-crypt status`
 
