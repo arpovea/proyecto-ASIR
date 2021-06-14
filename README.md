@@ -57,7 +57,7 @@ Hay distintos tipos de elementos en Terraform, los que se han utilizado son:
   - Output:    
     Son valores de retorno de las variables o bloques de Terraform.
 
-Opciones interesantes de los bloques de Terraform:
+Opción interesante de los bloques de Terraform:
 
   - depend_on: Cuando se le quiere indicar a Terraform un orden de creación de los distintos recursos.
 
