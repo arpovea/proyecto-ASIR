@@ -557,7 +557,7 @@ Los datos sensibles son el ID del proyecto y la clave SSH utilizada para la cone
 
 A continuación se reproducen los pasos para la instalación y configuración:
 
-  - Instalación
+  - Instalación:    
     En esta caso en Debian:
 
     `sudo apt update && sudo apt install git-crypt`
